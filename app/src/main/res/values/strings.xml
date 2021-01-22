@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">SmartSolutions</string>
+    <string name="first_page_app_description">Save money and time with us. The best engineer group who can create the best and cheapest solutions for you.</string>
+    <string name="welcome">Welcome</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="log_in">Log In</string>
 </resources>

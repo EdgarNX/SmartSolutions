@@ -6,23 +6,46 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:contentDescription="@string/app_name"
-        android:scaleType="centerCrop"
-        android:src="@drawable/background" />
-
     <View
+        android:id="@+id/view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorBackGround" />
+        android:background="@color/white"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp" />
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/imageTitleFirstPart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/first_part_title" />
+
+        <ImageView
+            android:id="@+id/imageTitleSecondPart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@+id/imageTitleFirstPart"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/second_part_title" />
+
+
+    </RelativeLayout>
 
     <ImageView
         android:id="@+id/imageLogo"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:layout_marginTop="80dp"
         android:contentDescription="@string/app_name"
         android:src="@drawable/smart_logo"
@@ -30,31 +53,59 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/textSignIn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Sign in for smart solutions"
-        android:textColor="@color/white"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:layout_marginTop="10dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageLogo" />
+    <!--    <ImageView-->
+    <!--        android:id="@+id/imageTitleFirstPart"-->
+    <!--        android:layout_width="127dp"-->
+    <!--        android:layout_height="70dp"-->
+    <!--        android:contentDescription="@string/app_name"-->
+    <!--        android:src="@drawable/first_part_title"-->
+    <!--        app:layout_constraintStart_toStartOf="parent"-->
+    <!--        app:layout_constraintTop_toBottomOf="@+id/imageLogo" />-->
 
-    <TextView
-        android:id="@+id/textDescription"
+    <!--    <ImageView-->
+    <!--        android:id="@+id/imageTitleSecondPart"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="70dp"-->
+    <!--        android:contentDescription="@string/app_name"-->
+    <!--        android:src="@drawable/second_part_title"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintTop_toBottomOf="@+id/imageLogo" />-->
+
+    <!--    <TextView-->
+    <!--        android:id="@+id/textSignIn"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:text="SmartSolutions"-->
+    <!--        android:textColor="@color/black"-->
+    <!--        android:textSize="20sp"-->
+    <!--        android:textStyle="bold"-->
+    <!--        android:layout_marginTop="10dp"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintStart_toStartOf="parent"-->
+    <!--        app:layout_constraintTop_toBottomOf="@+id/imageLogo" />-->
+
+<!--    <TextView-->
+<!--        android:id="@+id/textDescription"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="100dp"-->
+<!--        android:text="Save money and time!"-->
+<!--        android:textColor="@android:color/tab_indicator_text"-->
+<!--        android:textSize="20sp"-->
+<!--        android:textStyle="bold"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/imageLogo" />-->
+
+    <Button
+        android:id="@+id/buttonNextPage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Save money and time!"
-        android:textColor="@color/white"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:layout_marginTop="10dp"
+        android:text="Button"
+        android:background="@drawable/roundedbutton"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageLogo" />
+        app:layout_constraintStart_toStartOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
