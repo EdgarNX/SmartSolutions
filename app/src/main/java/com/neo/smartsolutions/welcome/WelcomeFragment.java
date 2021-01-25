@@ -61,7 +61,7 @@ public class WelcomeFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if(context instanceof OnModeItemSelectedListener){      // context instanceof YourActivity
+        if (context instanceof OnModeItemSelectedListener) {      // context instanceof YourActivity
             this.listener = (OnModeItemSelectedListener) context; // = (YourActivity) context
         } else {
             throw new ClassCastException(context.toString()
