@@ -1,5 +1,6 @@
 package com.neo.smartsolutions.welcome;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -11,11 +12,11 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.neo.smartsolutions.R;
-import com.neo.smartsolutions.WelcomeActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +27,8 @@ import java.util.List;
 public class SingUpFragment extends Fragment implements AdapterView.OnItemSelectedListener {
 
     private Spinner spinnerCountry;
+    private ImageButton buttonBack;
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -36,8 +39,40 @@ public class SingUpFragment extends Fragment implements AdapterView.OnItemSelect
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_sing_up, container, false);
+
     }
 
+    private OnBackPressedListener backPressedListener;
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        spinnerCountry = (Spinner) view.findViewById(R.id.country_spinner);
+        spinnerCountry.setAdapter(getSpinnerAdapter());
+        spinnerCountry.setOnItemSelectedListener(this);
+
+
+        buttonBack = (ImageButton) view.findViewById(R.id.backImageButton);
+
+        buttonBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                backPressedListener.onBackPressed();
+            }
+        });
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof OnBackPressedListener) {      // context instanceof YourActivity
+            this.backPressedListener = (OnBackPressedListener) context; // = (YourActivity) context
+        } else {
+            throw new ClassCastException(context.toString()
+                    + " must implement WelcomeFragment.OnModeItemSelectedListener");
+        }
+    }
+
+    //spinner
 
     private List<String> getSpinnerCountryDataSource() {
         List<String> countries = new ArrayList<>();
@@ -50,15 +85,7 @@ public class SingUpFragment extends Fragment implements AdapterView.OnItemSelect
     }
 
     private ArrayAdapter<String> getSpinnerAdapter() {
-        return new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, getSpinnerCountryDataSource());
-    }
-
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        spinnerCountry = (Spinner) view.findViewById(R.id.country_spinner);
-
-        spinnerCountry.setAdapter(getSpinnerAdapter());
-        spinnerCountry.setOnItemSelectedListener(this);
+        return new ArrayAdapter<>(getActivity(), R.layout.spinner_text, getSpinnerCountryDataSource());
     }
 
     @Override
@@ -69,6 +96,5 @@ public class SingUpFragment extends Fragment implements AdapterView.OnItemSelect
     public void onNothingSelected(AdapterView<?> adapterView) {
 
     }
-
 
 }

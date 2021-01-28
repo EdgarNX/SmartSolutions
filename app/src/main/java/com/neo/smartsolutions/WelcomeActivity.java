@@ -17,10 +17,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.neo.smartsolutions.welcome.LogInFragment;
+import com.neo.smartsolutions.welcome.OnBackPressedListener;
 import com.neo.smartsolutions.welcome.SingUpFragment;
 import com.neo.smartsolutions.welcome.WelcomeFragment;
 
-public class WelcomeActivity extends AppCompatActivity implements WelcomeFragment.OnModeItemSelectedListener {
+public class WelcomeActivity extends MainActivity implements WelcomeFragment.OnModeItemSelectedListener, OnBackPressedListener {
 
     public static final int SIGN_UP_MODE_CODE = 0;
     public static final int LOG_IN_MODE_CODE = 1;
@@ -62,6 +63,10 @@ public class WelcomeActivity extends AppCompatActivity implements WelcomeFragmen
                     .addToBackStack(null)
                     .commit();
         }
+    }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
     }
 }

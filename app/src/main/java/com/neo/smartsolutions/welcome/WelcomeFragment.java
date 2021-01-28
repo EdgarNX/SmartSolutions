@@ -35,6 +35,8 @@ public class WelcomeFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_welcome, container, false);
     }
 
+    private OnModeItemSelectedListener listener;
+
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
 
@@ -56,8 +58,6 @@ public class WelcomeFragment extends Fragment {
         });
     }
 
-    private OnModeItemSelectedListener listener;
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -65,9 +65,11 @@ public class WelcomeFragment extends Fragment {
             this.listener = (OnModeItemSelectedListener) context; // = (YourActivity) context
         } else {
             throw new ClassCastException(context.toString()
-                    + " must implement PizzaMenuFragment.OnItemSelectedListener");
+                    + " must implement WelcomeFragment.OnModeItemSelectedListener");
         }
     }
+
+    //interfaces
 
     public interface OnModeItemSelectedListener {
         void onModeItemSelected(int mode);
