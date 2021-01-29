@@ -9,6 +9,7 @@
     <string name="email">email</string>
     <string name="email_gmail_com">email@gmail.com</string>
     <string name="password">password</string>
-    <string name="password_hint">******</string>
+    <string name="password_hint">********</string>
     <string name="select_your_country">Select your country:</string>
+    <string name="accept_terms_and_conditions">Accept Terms and Conditions.</string>
 </resources>

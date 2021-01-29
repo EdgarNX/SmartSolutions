@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background"
+    android:focusableInTouchMode="true"
     tools:context=".welcome.SingUpFragment">
 
     <TextView
@@ -52,7 +53,7 @@
         android:layout_height="28dp"
         android:layout_marginStart="8dp"
         android:contentDescription="@string/app_name"
-        android:src="@drawable/at"
+        android:src="@drawable/ic_baseline_alternate_email_24"
         app:layout_constraintBottom_toTopOf="@id/viewEmailDivider"
         app:layout_constraintStart_toStartOf="@id/viewEmailDivider"
         app:layout_constraintTop_toTopOf="@id/textEmail"
@@ -68,7 +69,7 @@
         android:textAllCaps="true"
         android:textColor="@color/black"
         android:textSize="13sp"
-        app:layout_constraintEnd_toEndOf="@id/viewEmailDivider"
+        app:layout_constraintEnd_toStartOf="@+id/imageNotVisible"
         app:layout_constraintStart_toEndOf="@id/imageEmail"
         app:layout_constraintTop_toTopOf="@id/viewEmailDivider" />
 
@@ -84,7 +85,7 @@
         android:minHeight="35dp"
         android:textColor="@color/black"
         android:textSize="17sp"
-        app:layout_constraintEnd_toEndOf="@id/viewEmailDivider"
+        app:layout_constraintEnd_toStartOf="@+id/imageNotVisible"
         app:layout_constraintStart_toEndOf="@id/imageEmail"
         app:layout_constraintTop_toBottomOf="@+id/textPassword" />
 
@@ -103,10 +104,36 @@
         android:layout_height="28dp"
         android:layout_marginStart="8dp"
         android:contentDescription="@string/app_name"
-        android:src="@drawable/padlock"
+        android:src="@drawable/ic_baseline_lock_24"
         app:layout_constraintBottom_toTopOf="@id/viewPasswordDivider"
         app:layout_constraintStart_toStartOf="@id/viewEmailDivider"
         app:layout_constraintTop_toTopOf="@id/textPassword"
+        app:tint="@color/black" />
+
+    <ImageButton
+        android:id="@+id/imageVisible"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:background="@drawable/skin"
+        android:contentDescription="@string/app_name"
+        android:src="@drawable/ic_baseline_visibility_24"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@id/viewPasswordDivider"
+        app:layout_constraintEnd_toEndOf="@id/viewEmailDivider"
+        app:layout_constraintTop_toTopOf="@id/textPassword"
+        app:tint="@color/black" />
+
+    <ImageButton
+        android:id="@+id/imageNotVisible"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:background="@drawable/skin"
+        android:contentDescription="@string/app_name"
+        android:src="@drawable/ic_baseline_visibility_off_24"
+        app:layout_constraintBottom_toTopOf="@id/viewPasswordDivider"
+        app:layout_constraintEnd_toEndOf="@id/viewEmailDivider"
+        app:layout_constraintTop_toTopOf="@id/textPassword"
+        app:layout_constraintVertical_bias="0.48"
         app:tint="@color/black" />
 
     <TextView
@@ -129,10 +156,19 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="50dp"
         android:layout_marginEnd="50dp"
-        app:layout_constraintBottom_toTopOf="@id/buttonSignUp"
+        app:layout_constraintBottom_toTopOf="@id/checkBoxIAccept"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textSelectCountry" />
+
+    <CheckBox
+        android:id="@+id/checkBoxIAccept"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/accept_terms_and_conditions"
+        app:layout_constraintBottom_toTopOf="@id/buttonSignUp"
+        app:layout_constraintStart_toStartOf="@id/viewEmailDivider"
+        app:layout_constraintTop_toBottomOf="@+id/country_spinner" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/buttonSignUp"
@@ -149,7 +185,7 @@
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/country_spinner" />
+        app:layout_constraintTop_toBottomOf="@+id/checkBoxIAccept" />
 
     <ImageView
         android:id="@+id/imageLogo"

@@ -21,7 +21,7 @@ import com.neo.smartsolutions.welcome.OnBackPressedListener;
 import com.neo.smartsolutions.welcome.SingUpFragment;
 import com.neo.smartsolutions.welcome.WelcomeFragment;
 
-public class WelcomeActivity extends MainActivity implements WelcomeFragment.OnModeItemSelectedListener, OnBackPressedListener {
+public class WelcomeActivity extends MainActivity implements WelcomeFragment.OnModeItemSelectedListener, OnBackPressedListener, SingUpFragment.OnSignUpButtonPressedListener {
 
     public static final int SIGN_UP_MODE_CODE = 0;
     public static final int LOG_IN_MODE_CODE = 1;
@@ -68,5 +68,10 @@ public class WelcomeActivity extends MainActivity implements WelcomeFragment.OnM
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+    }
+
+    @Override
+    public void onSignUpButtonPressed(String email, String password, String country) {
+
     }
 }

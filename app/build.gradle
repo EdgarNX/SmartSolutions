@@ -42,5 +42,4 @@ dependencies {
     implementation 'androidx.navigation:navigation-ui:2.3.2'
     implementation "androidx.fragment:fragment:1.2.5"
 
-
 }
