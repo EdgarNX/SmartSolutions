@@ -1,27 +1,16 @@
 package com.neo.smartsolutions;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.ColorUtils;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.animation.ValueAnimator;
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.content.res.Configuration;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.neo.smartsolutions.welcome.LogInFragment;
-import com.neo.smartsolutions.welcome.OnBackPressedListener;
+import com.neo.smartsolutions.welcome.OnPressedListener;
 import com.neo.smartsolutions.welcome.SingUpFragment;
 import com.neo.smartsolutions.welcome.WelcomeFragment;
 
-public class WelcomeActivity extends MainActivity implements WelcomeFragment.OnModeItemSelectedListener, OnBackPressedListener, SingUpFragment.OnSignUpButtonPressedListener {
+public class WelcomeActivity extends MainActivity implements OnPressedListener {
 
     public static final int SIGN_UP_MODE_CODE = 0;
     public static final int LOG_IN_MODE_CODE = 1;
@@ -43,13 +32,12 @@ public class WelcomeActivity extends MainActivity implements WelcomeFragment.OnM
 
     @Override
     public void onModeItemSelected(int mode) {
-
         if (mode == SIGN_UP_MODE_CODE) {
             SingUpFragment singUpFragment = new SingUpFragment();
 
             getSupportFragmentManager()
                     .beginTransaction()
-                    .setCustomAnimations(R.anim.slide_in_up, R.anim.slide_out_up)
+                    .setCustomAnimations(R.anim.slide_in_up, R.anim.slide_out_up, R.anim.slide_in_up, R.anim.slide_out_up)
                     .replace(R.id.form_placeholder, singUpFragment) // replace flContainer
                     .addToBackStack(null)
                     .commit();
@@ -58,7 +46,7 @@ public class WelcomeActivity extends MainActivity implements WelcomeFragment.OnM
 
             getSupportFragmentManager()
                     .beginTransaction()
-                    .setCustomAnimations(R.anim.slide_in_up, R.anim.slide_out_up)
+                    .setCustomAnimations(R.anim.slide_in_up, R.anim.slide_out_up, R.anim.slide_in_up, R.anim.slide_out_up)
                     .replace(R.id.form_placeholder, logInFragment) // replace flContainer
                     .addToBackStack(null)
                     .commit();
@@ -72,6 +60,12 @@ public class WelcomeActivity extends MainActivity implements WelcomeFragment.OnM
 
     @Override
     public void onSignUpButtonPressed(String email, String password, String country) {
+        Toast.makeText(WelcomeActivity.this, email + password + country, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onLogInButtonPressed(String email, String password) {
+        Toast.makeText(WelcomeActivity.this, email + password, Toast.LENGTH_LONG).show();
 
     }
 }

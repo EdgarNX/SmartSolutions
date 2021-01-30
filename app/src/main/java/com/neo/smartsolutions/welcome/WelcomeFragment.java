@@ -10,19 +10,16 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.neo.smartsolutions.R;
 import com.neo.smartsolutions.WelcomeActivity;
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class WelcomeFragment extends Fragment {
 
-    private Button buttonSignUp;
-    private TextView buttonLogIn;
+    private OnPressedListener listener;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -35,44 +32,39 @@ public class WelcomeFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_welcome, container, false);
     }
 
-    private OnModeItemSelectedListener listener;
-
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
+        Button buttonSignUp = (Button) view.findViewById(R.id.buttonSignUp);
+        buttonSignUp.setOnClickListener(signUpOnClick);
 
-        buttonSignUp = (Button) view.findViewById(R.id.buttonSignUp);
-        buttonLogIn = (TextView) view.findViewById(R.id.buttonLogIn);
-
-        buttonSignUp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                listener.onModeItemSelected(WelcomeActivity.SIGN_UP_MODE_CODE);
-            }
-        });
-
-        buttonLogIn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                listener.onModeItemSelected(WelcomeActivity.LOG_IN_MODE_CODE);
-            }
-        });
+        TextView buttonLogIn = (TextView) view.findViewById(R.id.buttonLogIn);
+        buttonLogIn.setOnClickListener(logInOnClick);
     }
 
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        if (context instanceof OnModeItemSelectedListener) {      // context instanceof YourActivity
-            this.listener = (OnModeItemSelectedListener) context; // = (YourActivity) context
+        if (context instanceof OnPressedListener) {
+            this.listener = (OnPressedListener) context;
         } else {
             throw new ClassCastException(context.toString()
-                    + " must implement WelcomeFragment.OnModeItemSelectedListener");
+                    + " must implement OnPressListener");
         }
     }
 
-    //interfaces
+    //listeners
 
-    public interface OnModeItemSelectedListener {
-        void onModeItemSelected(int mode);
-    }
+    private final View.OnClickListener signUpOnClick = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            listener.onModeItemSelected(WelcomeActivity.SIGN_UP_MODE_CODE);
+        }
+    };
 
+    private final View.OnClickListener logInOnClick = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            listener.onModeItemSelected(WelcomeActivity.LOG_IN_MODE_CODE);
+        }
+    };
 }

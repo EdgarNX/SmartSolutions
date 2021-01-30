@@ -36,7 +36,8 @@
         android:textSize="17sp"
         app:layout_constraintEnd_toEndOf="@id/viewEmailDivider"
         app:layout_constraintStart_toEndOf="@id/imageEmail"
-        app:layout_constraintTop_toBottomOf="@+id/textEmail" />
+        app:layout_constraintTop_toBottomOf="@+id/textEmail"
+        tools:ignore="Autofill" />
 
     <View
         android:id="@+id/viewEmailDivider"
@@ -87,7 +88,8 @@
         android:textSize="17sp"
         app:layout_constraintEnd_toStartOf="@+id/imageNotVisible"
         app:layout_constraintStart_toEndOf="@id/imageEmail"
-        app:layout_constraintTop_toBottomOf="@+id/textPassword" />
+        app:layout_constraintTop_toBottomOf="@+id/textPassword"
+        tools:ignore="Autofill" />
 
     <View
         android:id="@+id/viewPasswordDivider"
@@ -114,7 +116,7 @@
         android:id="@+id/imageVisible"
         android:layout_width="28dp"
         android:layout_height="28dp"
-        android:background="@drawable/skin"
+        android:background="@drawable/skin_eye_open_button"
         android:contentDescription="@string/app_name"
         android:src="@drawable/ic_baseline_visibility_24"
         android:visibility="gone"
@@ -127,7 +129,7 @@
         android:id="@+id/imageNotVisible"
         android:layout_width="28dp"
         android:layout_height="28dp"
-        android:background="@drawable/skin"
+        android:background="@drawable/skin_eye_closed_button"
         android:contentDescription="@string/app_name"
         android:src="@drawable/ic_baseline_visibility_off_24"
         app:layout_constraintBottom_toTopOf="@id/viewPasswordDivider"
@@ -204,7 +206,7 @@
         android:layout_height="50dp"
         android:layout_marginStart="24dp"
         android:layout_marginTop="24dp"
-        android:background="@drawable/skin"
+        android:background="@drawable/skin_back_button"
         android:contentDescription="@string/app_name"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

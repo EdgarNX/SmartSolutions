@@ -16,8 +16,6 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -29,33 +27,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.neo.smartsolutions.R;
-import com.neo.smartsolutions.WelcomeActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import static android.content.Context.INPUT_METHOD_SERVICE;
-import static androidx.core.content.ContextCompat.getSystemService;
-
-/**
- * A simple {@link Fragment} subclass.
- */
-public class SingUpFragment extends Fragment implements AdapterView.OnItemSelectedListener {
+public class SingUpFragment extends WelcomeResources implements AdapterView.OnItemSelectedListener {
 
     private Spinner spinnerCountry;
-    private ImageButton buttonBack;
-    private Button signUpButton;
-    private EditText inputEmail;
-    private EditText inputPassword;
     private CheckBox checkBoxIAccept;
-    private ImageButton imageVisible;
-    private ImageButton imageNotVisible;
 
-    private TextView errorText;
-
-    private String email;
-    private String password;
     private String country = "nothing";
     private Boolean countrySpinnerWasTouched = false;
     private Boolean termsAndConditionsChecked = false;
@@ -66,14 +47,9 @@ public class SingUpFragment extends Fragment implements AdapterView.OnItemSelect
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_sing_up, container, false);
-
     }
-
-    private OnBackPressedListener backPressedListener;
-    private OnSignUpButtonPressedListener onSignUpButtonPressedListener;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -83,65 +59,23 @@ public class SingUpFragment extends Fragment implements AdapterView.OnItemSelect
         spinnerCountry.setOnItemSelectedListener(this);
         spinnerCountry.setOnTouchListener(spinnerOnTouch);
 
-        imageVisible = view.findViewById(R.id.imageVisible);
-        imageVisible.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(getActivity(), "down", Toast.LENGTH_LONG).show();
-                inputPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-                imageVisible.setVisibility(View.GONE);
-                imageNotVisible.setVisibility(View.VISIBLE);
-            }
-        });
-
-        imageNotVisible = view.findViewById(R.id.imageNotVisible);
-        imageNotVisible.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(getActivity(), "down", Toast.LENGTH_LONG).show();
-                inputPassword.setInputType(InputType.TYPE_CLASS_TEXT);
-                imageVisible.setVisibility(View.VISIBLE);
-                imageNotVisible.setVisibility(View.GONE);
-            }
-        });
-
         inputEmail = view.findViewById(R.id.inputEmail);
         inputPassword = view.findViewById(R.id.inputPassword);
+
+        imageVisible = view.findViewById(R.id.imageVisible);
+        imageVisible.setOnClickListener(closedEyeOnClick);
+
+        imageNotVisible = view.findViewById(R.id.imageNotVisible);
+        imageNotVisible.setOnClickListener(openEyeOnClick);
+
         checkBoxIAccept = view.findViewById(R.id.checkBoxIAccept);
         checkBoxIAccept.setOnTouchListener(checkBoxOnTouch);
 
-        buttonBack = view.findViewById(R.id.backImageButton);
-        buttonBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                backPressedListener.onBackPressed();
-            }
-        });
+        Button signUpButton = view.findViewById(R.id.buttonSignUp);
+        signUpButton.setOnClickListener(signUpOnClick);
 
-        signUpButton = view.findViewById(R.id.buttonSignUp);
-        signUpButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                email = inputEmail.getText().toString();
-                password = inputPassword.getText().toString();
-                termsAndConditionsChecked = checkBoxIAccept.isChecked();
-
-                checkSignUpFields();
-            }
-        });
-    }
-
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-        if (context instanceof OnBackPressedListener) {      // context instanceof YourActivity
-            this.backPressedListener = (OnBackPressedListener) context; // = (YourActivity) context
-        } else {
-            throw new ClassCastException(context.toString()
-                    + " must implement WelcomeFragment.OnModeItemSelectedListener");
-        }
-        //todo here the sign up button listener
+        buttonBack = (ImageButton) view.findViewById(R.id.backImageButton);
+        buttonBack.setOnClickListener(backOnClick);
     }
 
     //spinner
@@ -175,12 +109,12 @@ public class SingUpFragment extends Fragment implements AdapterView.OnItemSelect
     //methods
 
     private void checkSignUpFields() {
-        if (isValidEmail()) {
-            if (isValidPassword()) {
+        if (super.isValidEmail(email)) {
+            if (isValidPassword(password)) {
                 if (countrySpinnerWasTouched) {
                     if (termsAndConditionsChecked) {
-                        Toast.makeText(getActivity(), "It's ok!", Toast.LENGTH_LONG).show();
-                        //onSignUpButtonPressedListener.onSignUpButtonPressed(email, password, country);
+                        //Toast.makeText(getActivity(), "It's ok!", Toast.LENGTH_LONG).show();
+                        pressedListener.onSignUpButtonPressed(email, password, country);
                     } else {
                         checkBoxIAccept.setError("Please check the Terms and Conditions.");
                         //Toast.makeText(getActivity(), "Please check the Terms and Conditions.", Toast.LENGTH_LONG).show();
@@ -197,11 +131,11 @@ public class SingUpFragment extends Fragment implements AdapterView.OnItemSelect
             inputEmail.setError("The email address is incorrect.");
             //Toast.makeText(getActivity(), "The email address is incorrect.", Toast.LENGTH_LONG).show();
         }
-
     }
 
+    @SuppressLint("SetTextI18n")
     public void setSpinnerText(String text) {
-        errorText = (TextView) spinnerCountry.getSelectedView();
+        TextView errorText = (TextView) spinnerCountry.getSelectedView();
         if ("error".equals(text)) {
             errorText.setError("this is just for the icon");
             errorText.setTextColor(Color.RED);
@@ -211,25 +145,23 @@ public class SingUpFragment extends Fragment implements AdapterView.OnItemSelect
             errorText.setTextColor(Color.BLACK);
             errorText.setText(text);
         }
-
-    }
-
-    //validation
-
-    public boolean isValidEmail() {
-        return (!TextUtils.isEmpty(email) && Patterns.EMAIL_ADDRESS.matcher(email).matches());
-    }
-
-    public boolean isValidPassword() {
-        Pattern PASSWORD_PATTERN
-                = Pattern.compile("[a-zA-Z0-9\\!\\@\\#\\$]{8,24}");
-
-        return !TextUtils.isEmpty(password) && PASSWORD_PATTERN.matcher(password).matches();
     }
 
     //listeners
 
-    private View.OnTouchListener spinnerOnTouch = new View.OnTouchListener() {
+    private View.OnClickListener signUpOnClick = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            email = inputEmail.getText().toString();
+            password = inputPassword.getText().toString();
+            termsAndConditionsChecked = checkBoxIAccept.isChecked();
+
+            checkSignUpFields();
+        }
+    };
+
+    private final View.OnTouchListener spinnerOnTouch = new View.OnTouchListener() {
+        @SuppressLint("ClickableViewAccessibility")
         public boolean onTouch(View v, MotionEvent event) {
             if (event.getAction() == MotionEvent.ACTION_UP) {
                 countrySpinnerWasTouched = true;
@@ -239,20 +171,38 @@ public class SingUpFragment extends Fragment implements AdapterView.OnItemSelect
         }
     };
 
-    private View.OnTouchListener checkBoxOnTouch = new View.OnTouchListener() {
+    private final View.OnTouchListener checkBoxOnTouch = new View.OnTouchListener() {
+        @SuppressLint("ClickableViewAccessibility")
         public boolean onTouch(View v, MotionEvent event) {
             if (event.getAction() == MotionEvent.ACTION_UP) {
                 checkBoxIAccept.setError(null);
-
             }
             return false;
         }
     };
 
-    //interfaces
+    private final View.OnClickListener closedEyeOnClick = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            inputPassword.setInputType(InputType.TYPE_CLASS_TEXT);
+            imageVisible.setVisibility(View.VISIBLE);
+            imageNotVisible.setVisibility(View.GONE);
+        }
+    };
 
-    public interface OnSignUpButtonPressedListener {
-        void onSignUpButtonPressed(String email, String password, String country);
-    }
+    private final View.OnClickListener openEyeOnClick = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            inputPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+            imageVisible.setVisibility(View.GONE);
+            imageNotVisible.setVisibility(View.VISIBLE);
+        }
+    };
 
+    private final View.OnClickListener backOnClick = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            pressedListener.onBackPressed();
+        }
+    };
 }
