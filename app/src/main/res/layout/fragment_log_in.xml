@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background"
+    android:background="@drawable/layout_background"
     android:focusableInTouchMode="true"
     tools:context=".welcome.SingUpFragment">
 
@@ -139,6 +139,78 @@
         app:layout_constraintVertical_bias="0.48"
         app:tint="@color/black" />
 
+    <TextView
+        android:id="@+id/textForgotPassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:text="@string/forgot_password"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="@id/viewEmailDivider"
+        app:layout_constraintTop_toBottomOf="@+id/buttonLogIn" />
+
+    <LinearLayout
+        android:id="@+id/viewBreak"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@+id/textForgotPassword">
+
+        <View
+            android:id="@+id/firstViewBreak"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="30dp"
+            android:layout_weight="3"
+            android:background="@color/black" />
+
+        <TextView
+            android:id="@+id/textOrViewBreak"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="4dp"
+            android:text="@string/or"
+            android:background="@drawable/text_background"
+            android:textSize="16sp" />
+
+        <View
+            android:id="@+id/secondViewBreak"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginEnd="30dp"
+            android:layout_weight="3"
+            android:background="@color/black" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layoutSocial"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@+id/viewBreak">
+
+        <ImageView
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_marginEnd="5dp"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/ic_facebook" />
+
+        <ImageView
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_marginStart="5dp"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/ic_search" />
+
+    </LinearLayout>
+
     <ImageView
         android:id="@+id/imageLogo"
         android:layout_width="wrap_content"
@@ -165,7 +237,7 @@
         android:id="@+id/buttonLogIn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="30dp"
         android:layout_marginBottom="16dp"
         android:background="@drawable/roundedbutton_white_colored"
         android:backgroundTint="@null"
