@@ -21,7 +21,7 @@
         <item name="android:windowContentOverlay">@null</item>
     </style>
 
-    <style name="spinnerItemStyle" parent="android:Widget.TextView.SpinnerItem"/>
+    <style name="spinnerItemStyle" parent="android:Widget.TextView.SpinnerItem" />
 
     <style name="spinnerDropDownItemStyle" parent="android:TextAppearance.Widget.TextView.SpinnerItem" />
 
@@ -32,6 +32,23 @@
     <style name="ThemeOverlay.AppCompat.navTheme">
         <item name="colorPrimary">@color/base_green</item>
         <item name="colorControlHighlight">@color/base_green</item>
+    </style>
+
+    <style name="Theme.SmartSolutions.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="Theme.SmartSolutions.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="Theme.SmartSolutions.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="MyCustomTabLayout" parent="Widget.Design.TabLayout">
+        <item name="colorPrimary">@color/base_green</item>
+        <item name="tabIndicatorHeight">2dp</item>
+        <item name="tabIndicatorColor">@color/base_green</item>
+
+
     </style>
 
 </resources>

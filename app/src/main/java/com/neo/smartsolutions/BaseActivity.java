@@ -2,12 +2,12 @@ package com.neo.smartsolutions;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.viewpager.widget.ViewPager;
 
 import android.os.Bundle;
 import android.view.Menu;
@@ -16,6 +16,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.tabs.TabLayout;
+import com.neo.smartsolutions.home.HomeFragment;
+import com.neo.smartsolutions.home.TabControlFragment;
+import com.neo.smartsolutions.home.TabSolutionFragment;
+import com.neo.smartsolutions.home.TabAdapter;
 
 public class BaseActivity extends MainActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -45,24 +50,14 @@ public class BaseActivity extends MainActivity implements NavigationView.OnNavig
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.setCheckedItem(R.id.nav_home);
 
-//        FragmentManager fragmentManager = getSupportFragmentManager();
-//        ImportFragment fragment = new ImportFragment();
-//        fragmentManager.beginTransaction().replace(R.id.frameLayout, fragment).commit();
-
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        HomeFragment fragment = new HomeFragment();
+        fragmentManager.beginTransaction().replace(R.id.frameLayout, fragment).commit();
     }
 
+    //for nav drawer
     private void setActionBarTitle(String title) {
         toolbar_title.setText(title);
-    }
-
-    @Override
-    public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
     }
 
     @Override
@@ -92,11 +87,12 @@ public class BaseActivity extends MainActivity implements NavigationView.OnNavig
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-//        Fragment fragment = null;
-//        FragmentManager fragmentManager = getSupportFragmentManager();
+        Fragment fragment = null;
+        FragmentManager fragmentManager = getSupportFragmentManager();
 
         if (id == R.id.nav_home) {
             Toast.makeText(BaseActivity.this, "home", Toast.LENGTH_LONG).show();
+            fragment = new HomeFragment();
         } else if (id == R.id.nav_help) {
             Toast.makeText(BaseActivity.this, "help", Toast.LENGTH_LONG).show();
         } else if (id == R.id.nav_settings) {
@@ -104,9 +100,21 @@ public class BaseActivity extends MainActivity implements NavigationView.OnNavig
         } else if (id == R.id.nav_logout) {
             Toast.makeText(BaseActivity.this, "logout", Toast.LENGTH_LONG).show();
         }
-//        fragmentManager.beginTransaction().replace(R.id.frameLayout, fragment).commit();
-//        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-//        drawer.closeDrawer(GravityCompat.START);
+
+        fragmentManager.beginTransaction().replace(R.id.frameLayout, fragment).commit();
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    //methods
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
     }
 }

@@ -20,15 +20,15 @@ public class WelcomeActivity extends MainActivity implements OnPressedListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.w_welcome);
+        setContentView(R.layout.w_activity_welcome);
 
         if (savedInstanceState == null) {
             WelcomeFragment welcomeFragment = new WelcomeFragment();
 
-            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            FragmentTransaction fragment = getSupportFragmentManager().beginTransaction();
 
-            ft.add(R.id.form_placeholder, welcomeFragment);
-            ft.commit();
+            fragment.add(R.id.form_placeholder, welcomeFragment);
+            fragment.commit();
         }
     }
 

@@ -17,19 +17,19 @@
             android:layout_height="?attr/actionBarSize"
             android:background="@color/white"
             app:popupTheme="@style/AppTheme.PopupOverlay"
-            app:theme="@style/AppTheme.PopupOverlay" >
+            app:theme="@style/AppTheme.PopupOverlay">
 
             <TextView
                 android:id="@+id/toolbar_title"
+                style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
                 android:layout_gravity="center" />
 
         </androidx.appcompat.widget.Toolbar>
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <include layout="@layout/b_content_main" />
+    <include layout="@layout/b_content" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

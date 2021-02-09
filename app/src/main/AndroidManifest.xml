@@ -9,26 +9,24 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/Theme.SmartSolutions">
-
-        <activity
-            android:name=".BaseActivity">
+        <activity android:name=".BaseActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".WelcomeActivity"
             android:theme="@style/FullScreen">
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.MAIN" />-->
 
-<!--                <category android:name="android.intent.category.LAUNCHER" />-->
-<!--            </intent-filter>-->
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+
+
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
         </activity>
-
     </application>
 
 </manifest>

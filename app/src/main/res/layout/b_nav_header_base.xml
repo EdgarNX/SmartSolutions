@@ -12,29 +12,14 @@
     android:paddingBottom="16dp"
     android:theme="@style/ThemeOverlay.AppCompat.Light">
 
-    <RelativeLayout
+    <ImageView
         android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:paddingLeft="16dp"
-        android:paddingRight="16dp">
-
-        <ImageView
-            android:id="@+id/imageTitleFirstPart"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:contentDescription="@string/app_name"
-            android:src="@drawable/first_part_title" />
-
-        <ImageView
-            android:id="@+id/imageTitleSecondPart"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toEndOf="@+id/imageTitleFirstPart"
-            android:contentDescription="@string/app_name"
-            android:src="@drawable/second_part_title" />
-    </RelativeLayout>
+        android:paddingRight="16dp"
+        android:contentDescription="@string/app_name"
+        android:src="@drawable/title" />
 
     <TextView
         android:id="@+id/textEmail"
