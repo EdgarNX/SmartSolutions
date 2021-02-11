@@ -26,7 +26,7 @@ public class LogInFragment extends WelcomeResources {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        inputEmail = view.findViewById(R.id.inputEmail);
+        inputEmail = view.findViewById(R.id.inputDeviceName);
         inputPassword = view.findViewById(R.id.inputPassword);
 
         imageVisible = view.findViewById(R.id.imageVisible);
@@ -38,7 +38,7 @@ public class LogInFragment extends WelcomeResources {
         Button logInButton = view.findViewById(R.id.buttonLogIn);
         logInButton.setOnClickListener(logInOnClick);
 
-        buttonBack = (ImageButton) view.findViewById(R.id.backImageButton);
+        buttonBack = view.findViewById(R.id.backImageButton);
         buttonBack.setOnClickListener(backOnClick);
     }
 

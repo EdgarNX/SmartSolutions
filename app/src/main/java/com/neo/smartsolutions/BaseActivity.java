@@ -7,7 +7,6 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.viewpager.widget.ViewPager;
 
 import android.os.Bundle;
 import android.view.Menu;
@@ -16,15 +15,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
-import com.google.android.material.tabs.TabLayout;
 import com.neo.smartsolutions.home.HomeFragment;
-import com.neo.smartsolutions.home.TabControlFragment;
-import com.neo.smartsolutions.home.TabSolutionFragment;
-import com.neo.smartsolutions.home.TabAdapter;
+import com.neo.smartsolutions.home.Listener;
+import com.neo.smartsolutions.home.AddLocationFragment;
+import com.neo.smartsolutions.settings.SettingsFragment;
 
-public class BaseActivity extends MainActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class BaseActivity extends MainActivity implements NavigationView.OnNavigationItemSelectedListener, Listener {
 
+    public static final int CONTROL_MODE_CODE = 0;
+    public static final int SOLUTIONS_MODE_CODE = 1;
     private TextView toolbar_title;
+    private Menu menu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,38 +36,33 @@ public class BaseActivity extends MainActivity implements NavigationView.OnNavig
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        //todo do this in a method depending to where you are
-        toolbar_title = (TextView) toolbar.findViewById(R.id.toolbar_title);
-        setActionBarTitle("Location");
+        toolbar_title = toolbar.findViewById(R.id.toolbar_title);
+        setActionBarTitle("Locations");
 
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.setCheckedItem(R.id.nav_home);
 
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        HomeFragment fragment = new HomeFragment();
-        fragmentManager.beginTransaction().replace(R.id.frameLayout, fragment).commit();
+        beginTransactionToAnotherFragment(new HomeFragment());
     }
-
-    //for nav drawer
+    //methods for nav drawer
     private void setActionBarTitle(String title) {
         toolbar_title.setText(title);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
+        this.menu = menu;
         return true;
     }
 
+    //todo the plus from the action bar
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -76,7 +72,16 @@ public class BaseActivity extends MainActivity implements NavigationView.OnNavig
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.buttonAdd) {
-            return true;
+            if("Locations".equals(toolbar_title.getText().toString())) {
+                beginTransactionToAnotherFragment(new AddLocationFragment());
+                setActionBarTitle("Add locations");
+                menu.findItem(R.id.buttonAdd).setVisible(false);
+            } else if ("Solutions".equals(toolbar_title.getText().toString())) {
+                //todo add here the add solution
+                beginTransactionToAnotherFragment(new SettingsFragment());
+                setActionBarTitle("Settings");
+                menu.findItem(R.id.buttonAdd).setVisible(false);
+            }
         }
 
         return super.onOptionsItemSelected(item);
@@ -84,33 +89,64 @@ public class BaseActivity extends MainActivity implements NavigationView.OnNavig
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        // Handle navigation view item clicks here.
         int id = item.getItemId();
-
-        Fragment fragment = null;
-        FragmentManager fragmentManager = getSupportFragmentManager();
 
         if (id == R.id.nav_home) {
             Toast.makeText(BaseActivity.this, "home", Toast.LENGTH_LONG).show();
-            fragment = new HomeFragment();
+            beginTransactionToAnotherFragment(new HomeFragment());
+            setActionBarTitle("Locations");
+            menu.findItem(R.id.buttonAdd).setVisible(true);
         } else if (id == R.id.nav_help) {
             Toast.makeText(BaseActivity.this, "help", Toast.LENGTH_LONG).show();
+            beginTransactionToAnotherFragment(new SettingsFragment());
+            setActionBarTitle("Help");
+            menu.findItem(R.id.buttonAdd).setVisible(false);
         } else if (id == R.id.nav_settings) {
             Toast.makeText(BaseActivity.this, "settings", Toast.LENGTH_LONG).show();
+            beginTransactionToAnotherFragment(new SettingsFragment());
+            setActionBarTitle("Settings");
+            menu.findItem(R.id.buttonAdd).setVisible(false);
         } else if (id == R.id.nav_logout) {
             Toast.makeText(BaseActivity.this, "logout", Toast.LENGTH_LONG).show();
+            beginTransactionToAnotherFragment(new SettingsFragment());
+            setActionBarTitle("Logout");
+            menu.findItem(R.id.buttonAdd).setVisible(false);
         }
-
-        fragmentManager.beginTransaction().replace(R.id.frameLayout, fragment).commit();
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 
-    //methods
+    public void beginTransactionToAnotherFragment(Fragment fragment) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.frameLayout, fragment).commit();
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+    }
+
+    @Override
+    public void onTabModeSelected(int mode) {
+        if (mode == CONTROL_MODE_CODE) {
+            setActionBarTitle("Locations");
+        } else {
+            setActionBarTitle("Solutions");
+        }
+    }
+
+    @Override
+    public void onBackPressedFromAddLocationFragment() {
+        beginTransactionToAnotherFragment(new HomeFragment());
+        setActionBarTitle("Locations");
+        menu.findItem(R.id.buttonAdd).setVisible(true);
+    }
+
+    @Override
+    public void onSubmitButtonPressed(String name, String city, String street, int number) {
+        Toast.makeText(BaseActivity.this, name + city + street + number, Toast.LENGTH_LONG).show();
+        onBackPressedFromAddLocationFragment();
+    }
+
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {

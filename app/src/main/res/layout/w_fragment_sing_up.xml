@@ -9,7 +9,7 @@
     tools:context=".welcome.SingUpFragment">
 
     <TextView
-        android:id="@+id/textEmail"
+        android:id="@+id/textDeviceName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
@@ -18,12 +18,12 @@
         android:textAllCaps="true"
         android:textColor="@color/black"
         android:textSize="13sp"
-        app:layout_constraintEnd_toEndOf="@id/viewEmailDivider"
+        app:layout_constraintEnd_toEndOf="@id/viewDeviceNameDivider"
         app:layout_constraintStart_toEndOf="@id/imageEmail"
         app:layout_constraintTop_toBottomOf="@id/imageLogo" />
 
     <EditText
-        android:id="@+id/inputEmail"
+        android:id="@+id/inputDeviceName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
@@ -34,19 +34,19 @@
         android:minHeight="35dp"
         android:textColor="@color/black"
         android:textSize="17sp"
-        app:layout_constraintEnd_toEndOf="@id/viewEmailDivider"
+        app:layout_constraintEnd_toEndOf="@id/viewDeviceNameDivider"
         app:layout_constraintStart_toEndOf="@id/imageEmail"
-        app:layout_constraintTop_toBottomOf="@+id/textEmail"
+        app:layout_constraintTop_toBottomOf="@+id/textDeviceName"
         tools:ignore="Autofill" />
 
     <View
-        android:id="@+id/viewEmailDivider"
+        android:id="@+id/viewDeviceNameDivider"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginStart="50dp"
         android:layout_marginEnd="50dp"
         android:background="@color/black"
-        app:layout_constraintTop_toBottomOf="@+id/inputEmail" />
+        app:layout_constraintTop_toBottomOf="@+id/inputDeviceName" />
 
     <ImageView
         android:id="@+id/imageEmail"
@@ -55,9 +55,9 @@
         android:layout_marginStart="8dp"
         android:contentDescription="@string/app_name"
         android:src="@drawable/ic_baseline_alternate_email_24"
-        app:layout_constraintBottom_toTopOf="@id/viewEmailDivider"
-        app:layout_constraintStart_toStartOf="@id/viewEmailDivider"
-        app:layout_constraintTop_toTopOf="@id/textEmail"
+        app:layout_constraintBottom_toTopOf="@id/viewDeviceNameDivider"
+        app:layout_constraintStart_toStartOf="@id/viewDeviceNameDivider"
+        app:layout_constraintTop_toTopOf="@id/textDeviceName"
         app:tint="@color/black" />
 
     <TextView
@@ -72,7 +72,7 @@
         android:textSize="13sp"
         app:layout_constraintEnd_toStartOf="@+id/imageNotVisible"
         app:layout_constraintStart_toEndOf="@id/imageEmail"
-        app:layout_constraintTop_toTopOf="@id/viewEmailDivider" />
+        app:layout_constraintTop_toTopOf="@id/viewDeviceNameDivider" />
 
     <EditText
         android:id="@+id/inputPassword"
@@ -92,7 +92,7 @@
         tools:ignore="Autofill" />
 
     <View
-        android:id="@+id/viewPasswordDivider"
+        android:id="@+id/viewCityDivider"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginStart="50dp"
@@ -107,8 +107,8 @@
         android:layout_marginStart="8dp"
         android:contentDescription="@string/app_name"
         android:src="@drawable/ic_baseline_lock_24"
-        app:layout_constraintBottom_toTopOf="@id/viewPasswordDivider"
-        app:layout_constraintStart_toStartOf="@id/viewEmailDivider"
+        app:layout_constraintBottom_toTopOf="@id/viewCityDivider"
+        app:layout_constraintStart_toStartOf="@id/viewDeviceNameDivider"
         app:layout_constraintTop_toTopOf="@id/textPassword"
         app:tint="@color/black" />
 
@@ -120,8 +120,8 @@
         android:contentDescription="@string/app_name"
         android:src="@drawable/ic_baseline_visibility_24"
         android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@id/viewPasswordDivider"
-        app:layout_constraintEnd_toEndOf="@id/viewEmailDivider"
+        app:layout_constraintBottom_toTopOf="@id/viewCityDivider"
+        app:layout_constraintEnd_toEndOf="@id/viewDeviceNameDivider"
         app:layout_constraintTop_toTopOf="@id/textPassword"
         app:tint="@color/black" />
 
@@ -132,8 +132,8 @@
         android:background="@drawable/skin_eye_closed_button"
         android:contentDescription="@string/app_name"
         android:src="@drawable/ic_baseline_visibility_off_24"
-        app:layout_constraintBottom_toTopOf="@id/viewPasswordDivider"
-        app:layout_constraintEnd_toEndOf="@id/viewEmailDivider"
+        app:layout_constraintBottom_toTopOf="@id/viewCityDivider"
+        app:layout_constraintEnd_toEndOf="@id/viewDeviceNameDivider"
         app:layout_constraintTop_toTopOf="@id/textPassword"
         app:layout_constraintVertical_bias="0.48"
         app:tint="@color/black" />
@@ -150,7 +150,7 @@
         android:textSize="13sp"
         app:layout_constraintBottom_toTopOf="@id/country_spinner"
         app:layout_constraintStart_toEndOf="@id/imageEmail"
-        app:layout_constraintTop_toBottomOf="@+id/viewPasswordDivider" />
+        app:layout_constraintTop_toBottomOf="@+id/viewCityDivider" />
 
     <Spinner
         android:id="@+id/country_spinner"
@@ -169,7 +169,7 @@
         android:layout_height="wrap_content"
         android:text="@string/accept_terms_and_conditions"
         app:layout_constraintBottom_toTopOf="@id/buttonSignUp"
-        app:layout_constraintStart_toStartOf="@id/viewEmailDivider"
+        app:layout_constraintStart_toStartOf="@id/viewDeviceNameDivider"
         app:layout_constraintTop_toBottomOf="@+id/country_spinner" />
 
     <androidx.appcompat.widget.AppCompatButton

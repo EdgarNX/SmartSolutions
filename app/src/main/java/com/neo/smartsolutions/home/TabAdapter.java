@@ -13,9 +13,8 @@ public class TabAdapter extends FragmentStatePagerAdapter {
     private final List<Fragment> mFragmentList = new ArrayList<>();
     private final List<String> mFragmentTitleList = new ArrayList<>();
 
-    //todo down
     public TabAdapter(FragmentManager manager) {
-        super(manager);
+        super(manager,BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
     }
 
     @NonNull

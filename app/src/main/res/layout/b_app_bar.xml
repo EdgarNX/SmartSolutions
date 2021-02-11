@@ -30,6 +30,6 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <include layout="@layout/b_content" />
+    <include layout="@layout/b_content_base" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

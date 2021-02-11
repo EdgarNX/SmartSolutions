@@ -51,7 +51,7 @@ public class SingUpFragment extends WelcomeResources implements AdapterView.OnIt
         spinnerCountry.setOnItemSelectedListener(this);
         spinnerCountry.setOnTouchListener(spinnerOnTouch);
 
-        inputEmail = view.findViewById(R.id.inputEmail);
+        inputEmail = view.findViewById(R.id.inputDeviceName);
         inputPassword = view.findViewById(R.id.inputPassword);
 
         imageVisible = view.findViewById(R.id.imageVisible);
@@ -66,7 +66,7 @@ public class SingUpFragment extends WelcomeResources implements AdapterView.OnIt
         Button signUpButton = view.findViewById(R.id.buttonSignUp);
         signUpButton.setOnClickListener(signUpOnClick);
 
-        buttonBack = (ImageButton) view.findViewById(R.id.backImageButton);
+        buttonBack = view.findViewById(R.id.backImageButton);
         buttonBack.setOnClickListener(backOnClick);
     }
 

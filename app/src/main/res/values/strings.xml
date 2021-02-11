@@ -26,4 +26,19 @@
     <string name="tab_text_2">Tab 2</string>
     <string name="control">Control</string>
     <string name="solutions">Solutions</string>
+    <string name="device_name">Device Name</string>
+    <string name="garage_led_switch">Garage led switch</string>
+    <string name="device_type">Device Type</string>
+    <string name="device_code">Device Code</string>
+    <string name="_2qf_lfe">2Qf$=^lfe</string>
+    <string name="submit_new_device">Submit new device</string>
+    <string name="location_name">Location Name</string>
+    <string name="my_beautiful_house">My beautiful house</string>
+    <string name="city">City</string>
+    <string name="timisoara">Timisoara</string>
+    <string name="street">Street</string>
+    <string name="muresului">Muresului</string>
+    <string name="number">Number</string>
+    <string name="_1">1</string>
+    <string name="submit_new_location">Submit new location</string>
 </resources>
