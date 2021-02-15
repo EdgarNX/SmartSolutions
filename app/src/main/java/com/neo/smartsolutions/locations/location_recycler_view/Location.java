@@ -1,4 +1,4 @@
-package com.neo.smartsolutions.location_recycler_view;
+package com.neo.smartsolutions.locations.location_recycler_view;
 
 import androidx.annotation.NonNull;
 
@@ -17,9 +17,13 @@ public class Location {
         this.number = number;
     }
 
-    public int getId() { return id; }
+    public int getId() {
+        return id;
+    }
 
-    public void setId(int id) { this.id = id; }
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getLocationName() {
         return locationName;
@@ -41,13 +45,21 @@ public class Location {
         return street;
     }
 
-    public void setStreet(String street) { this.street = street; }
+    public void setStreet(String street) {
+        this.street = street;
+    }
 
-    public int getNumber() { return number; }
+    public int getNumber() {
+        return number;
+    }
 
-    public void setNumber(int number) { this.number = number; }
+    public void setNumber(int number) {
+        this.number = number;
+    }
 
-    public String getLocation() { return city + " " + street + " " + number; }
+    public String getLocation() {
+        return city + " " + street + " " + number;
+    }
 
     @NonNull
     @Override

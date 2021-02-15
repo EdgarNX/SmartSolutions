@@ -1,4 +1,4 @@
-package com.neo.smartsolutions.home;
+package com.neo.smartsolutions.locations;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -13,9 +13,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.neo.smartsolutions.R;
-import com.neo.smartsolutions.location_recycler_view.ClickListener;
-import com.neo.smartsolutions.location_recycler_view.Location;
-import com.neo.smartsolutions.location_recycler_view.LocationAdapter;
+import com.neo.smartsolutions.devices.devices_recycler_view.Device;
+import com.neo.smartsolutions.home.Listener;
+import com.neo.smartsolutions.locations.location_recycler_view.ClickListener;
+import com.neo.smartsolutions.locations.location_recycler_view.Location;
+import com.neo.smartsolutions.locations.location_recycler_view.LocationAdapter;
+import com.neo.smartsolutions.welcome.LogInFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,18 +53,17 @@ public class LocationFragmentTab extends Fragment {
         displayLocationsList();
     }
 
-    // RecyclerView implementation
-    // get data source
+    // RecyclerView
     private void fillWithLocations() {
         locations = new ArrayList<>();
         Location location;
         for (int i = 0; i < 5; i++) {
-            location = new Location(i, "Home " + i, "Pancota " , "Muresului", i + 10);
+            location = new Location(i, "Home " + i, "Pancota ", "Muresului", i + 10);
             locations.add(location);
         }
     }
 
-    private void addLocation(String name,String city, String street, int number) {
+    private void addLocation(String name, String city, String street, int number) {
         //todo add here the new locations to the database/firebase
     }
 
@@ -72,11 +74,12 @@ public class LocationFragmentTab extends Fragment {
     private void setLocationsAdapter() {
         recyclerViewAdapter = new LocationAdapter(getActivity(), locations);
 
-        recyclerViewAdapter.setOnItemClickListener(new ClickListener<Location>(){
+        recyclerViewAdapter.setOnItemClickListener(new ClickListener<Location>() {
             @Override
             public void onItemClick(Location data) {
                 //todo from here we will fly to another frame where to add devices
                 Toast.makeText(getActivity(), data.getLocationName(), Toast.LENGTH_SHORT).show();
+                listener.onLocationSelected(data.getLocationName());
             }
         });
 
@@ -84,13 +87,10 @@ public class LocationFragmentTab extends Fragment {
     }
 
     private void displayLocationsList() {
-        // data source - checked
         fillWithLocations();
 
-        // layout manager - checked
         setLocationsLayoutManager();
 
-        // adapter - checked
         setLocationsAdapter();
     }
 }

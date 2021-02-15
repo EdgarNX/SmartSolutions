@@ -1,8 +1,7 @@
-package com.neo.smartsolutions.location_recycler_view;
+package com.neo.smartsolutions.locations.location_recycler_view;
 
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;

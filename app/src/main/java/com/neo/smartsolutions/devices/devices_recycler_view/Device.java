@@ -1,23 +1,29 @@
-package com.neo.smartsolutions.devices_recycler_view;
+package com.neo.smartsolutions.devices.devices_recycler_view;
 
 public class Device {
     private int id;
     private String deviceName;
+    private String description;
     private String status;
     private String type;
     private String code;
 
-    public Device(int id, String deviceName, String status, String type, String code) {
+    public Device(int id, String deviceName, String description, String status, String type, String code) {
         this.id = id;
         this.deviceName = deviceName;
+        this.description = description;
         this.status = status;
         this.type = type;
         this.code = code;
     }
 
-    public int getId() { return id; }
+    public int getId() {
+        return id;
+    }
 
-    public void setId(int id) { this.id = id; }
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getDeviceName() {
         return deviceName;
@@ -26,6 +32,12 @@ public class Device {
     public void setDeviceName(String deviceName) {
         this.deviceName = deviceName;
     }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) { this.description = description; }
 
     public String getStatus() {
         return status;
@@ -43,4 +55,11 @@ public class Device {
         this.type = type;
     }
 
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
 }

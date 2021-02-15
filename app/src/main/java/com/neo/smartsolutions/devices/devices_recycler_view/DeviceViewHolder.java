@@ -1,4 +1,4 @@
-package com.neo.smartsolutions.devices_recycler_view;
+package com.neo.smartsolutions.devices.devices_recycler_view;
 
 import android.view.View;
 import android.widget.ImageView;

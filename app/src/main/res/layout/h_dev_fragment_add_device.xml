@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/layout_background"
     android:focusableInTouchMode="true"
-    tools:context=".welcome.SingUpFragment">
+    tools:context=".devices.AddDeviceFragment">
 
     <TextView
         android:id="@+id/textDeviceName"
@@ -58,7 +58,7 @@
         app:layout_constraintTop_toTopOf="@id/viewDeviceNameDivider" />
 
     <Spinner
-        android:id="@+id/country_spinner"
+        android:id="@+id/device_spinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="50dp"
@@ -74,7 +74,7 @@
         android:layout_marginStart="50dp"
         android:layout_marginEnd="50dp"
         android:background="@color/black"
-        app:layout_constraintTop_toBottomOf="@+id/country_spinner" />
+        app:layout_constraintTop_toBottomOf="@+id/device_spinner" />
 
     <TextView
         android:id="@+id/textCode"

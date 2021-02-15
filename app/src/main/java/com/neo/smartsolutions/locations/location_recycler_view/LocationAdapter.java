@@ -1,4 +1,4 @@
-package com.neo.smartsolutions.location_recycler_view;
+package com.neo.smartsolutions.locations.location_recycler_view;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -15,6 +15,7 @@ import com.neo.smartsolutions.R;
 import java.util.List;
 
 public class LocationAdapter extends RecyclerView.Adapter<LocationViewHolder> {
+
     private List<Location> locations;
     private Context context;
     private ClickListener<Location> clickListener;

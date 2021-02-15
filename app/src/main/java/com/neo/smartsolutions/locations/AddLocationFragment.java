@@ -1,4 +1,4 @@
-package com.neo.smartsolutions.home;
+package com.neo.smartsolutions.locations;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.neo.smartsolutions.R;
+import com.neo.smartsolutions.home.Listener;
 
 public class AddLocationFragment extends Fragment {
 
@@ -27,7 +28,7 @@ public class AddLocationFragment extends Fragment {
     String name;
     String city;
     String street;
-    int number=-1;
+    int number = -1;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -59,12 +60,25 @@ public class AddLocationFragment extends Fragment {
         }
     }
 
+    //methods
+
+    private void extractLocationDates() {
+        name = inputLocationName.getText().toString();
+        city = inputCity.getText().toString();
+        street = inputStreet.getText().toString();
+        if (!inputNumber.getText().toString().isEmpty()) {
+            number = Integer.parseInt(inputNumber.getText().toString());
+        } else {
+            number = -1;
+        }
+    }
+
     private void checkLocationFields() {
-        if (!name.isEmpty() && name.length()>0) {
-            if (!city.isEmpty() && city.length()>0) {
-                if (!street.isEmpty() && street.length()>0) {
+        if (!name.isEmpty() && name.length() > 0) {
+            if (!city.isEmpty() && city.length() > 0) {
+                if (!street.isEmpty() && street.length() > 0) {
                     if (number != -1) {
-                        listener.onSubmitButtonPressed(name, city, street, number);
+                        listener.onSubmitButtonPressedFromLocation(name, city, street, number);
                     } else {
                         inputNumber.setError("Please complete the number field.");
                     }
@@ -81,18 +95,10 @@ public class AddLocationFragment extends Fragment {
 
     //listeners
 
-    private View.OnClickListener submitOnClick = new View.OnClickListener() {
+    private final View.OnClickListener submitOnClick = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            name = inputLocationName.getText().toString();
-            city = inputCity.getText().toString();
-            street = inputStreet.getText().toString();
-            if(!inputNumber.getText().toString().isEmpty()) {
-                number = Integer.parseInt(inputNumber.getText().toString());
-            } else {
-                number = -1;
-            }
-
+            extractLocationDates();
             checkLocationFields();
         }
     };
@@ -100,7 +106,7 @@ public class AddLocationFragment extends Fragment {
     private final View.OnClickListener backOnClick = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            listener.onBackPressedFromAddLocationFragment();
+            listener.onBackPressedToLocationFragment();
         }
     };
 }

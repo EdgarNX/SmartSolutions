@@ -40,7 +40,7 @@ public class WelcomeActivity extends MainActivity implements OnPressedListener {
             getSupportFragmentManager()
                     .beginTransaction()
                     .setCustomAnimations(R.anim.slide_in_up, R.anim.slide_out_up, R.anim.slide_in_up, R.anim.slide_out_up)
-                    .replace(R.id.form_placeholder, singUpFragment) // replace flContainer
+                    .replace(R.id.form_placeholder, singUpFragment)
                     .addToBackStack(null)
                     .commit();
         } else {
@@ -49,7 +49,7 @@ public class WelcomeActivity extends MainActivity implements OnPressedListener {
             getSupportFragmentManager()
                     .beginTransaction()
                     .setCustomAnimations(R.anim.slide_in_up, R.anim.slide_out_up, R.anim.slide_in_up, R.anim.slide_out_up)
-                    .replace(R.id.form_placeholder, logInFragment) // replace flContainer
+                    .replace(R.id.form_placeholder, logInFragment)
                     .addToBackStack(null)
                     .commit();
         }
@@ -73,7 +73,7 @@ public class WelcomeActivity extends MainActivity implements OnPressedListener {
     }
 
     private void goToTheNextActivity(String email) {
-        Intent intentToBaseActivity = new Intent(WelcomeActivity.this, BaseActivity.class);
+        Intent intentToBaseActivity = new Intent(WelcomeActivity.this, HomeActivity.class);
         intentToBaseActivity.putExtra(EMAIL_MESSAGE_KEY, email);
         startActivity(intentToBaseActivity);
     }

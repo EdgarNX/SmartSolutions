@@ -12,15 +12,16 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
-import com.neo.smartsolutions.BaseActivity;
+import com.neo.smartsolutions.HomeActivity;
 import com.neo.smartsolutions.R;
+import com.neo.smartsolutions.locations.LocationFragmentTab;
+import com.neo.smartsolutions.solutions.SolutionFragmentTab;
 
 public class HomeFragment extends Fragment {
 
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private Listener listener;
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -45,7 +46,7 @@ public class HomeFragment extends Fragment {
             this.listener = (Listener) context;
         } else {
             throw new ClassCastException(context.toString()
-                    + " must implement OnPressListener");
+                    + " must implement Listener");
         }
     }
 
@@ -72,10 +73,10 @@ public class HomeFragment extends Fragment {
 
         @Override
         public void onPageSelected(int position) {
-            if(position == 0) {
-                listener.onTabModeSelected(BaseActivity.CONTROL_MODE_CODE);
+            if (position == 0) {
+                listener.onTabModeSelected(HomeActivity.CONTROL_MODE_CODE);
             } else {
-                listener.onTabModeSelected(BaseActivity.SOLUTIONS_MODE_CODE);
+                listener.onTabModeSelected(HomeActivity.SOLUTIONS_MODE_CODE);
             }
         }
 
@@ -84,5 +85,4 @@ public class HomeFragment extends Fragment {
 
         }
     };
-
 }

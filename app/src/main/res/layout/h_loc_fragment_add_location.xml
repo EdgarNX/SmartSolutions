@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/layout_background"
     android:focusableInTouchMode="true"
-    tools:context=".welcome.SingUpFragment">
+    tools:context=".locations.AddLocationFragment">
 
     <TextView
         android:id="@+id/textDeviceName"
