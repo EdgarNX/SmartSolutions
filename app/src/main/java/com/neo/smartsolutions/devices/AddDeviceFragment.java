@@ -106,9 +106,9 @@ public class AddDeviceFragment extends Fragment implements AdapterView.OnItemSel
     }
 
     private void checkLocationFields() {
-        if (!name.isEmpty() && name.length()>0) {
+        if (!name.isEmpty()) {
             if (deviceSpinnerWasTouched) {
-                if (!code.isEmpty() && code.length()>0) {
+                if (!code.isEmpty()) {
                     listener.onSubmitButtonPressedFromDevice(name, type, code);
                 } else {
                     inputCode.setError("Please complete the code field.");
@@ -148,7 +148,7 @@ public class AddDeviceFragment extends Fragment implements AdapterView.OnItemSel
     private final View.OnClickListener backOnClick = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            listener.onBackPressedFromAddDeviceFragment();
+            listener.onBackPressedToDeviceFragment();
         }
     };
 

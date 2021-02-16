@@ -78,8 +78,8 @@ public class DeviceFragment extends Fragment {
             @Override
             public void onItemClick(Device data) {
                 //todo from here we will fly to use the device activity
-                Toast.makeText(getActivity(), data.getDeviceName(), Toast.LENGTH_SHORT).show();
-                listener.onDeviceSelected(data.getDeviceName(),data.getType());
+                //Toast.makeText(getActivity(), data.getDeviceName(), Toast.LENGTH_SHORT).show();
+                listener.onDeviceSelected(data.getDeviceName(), data.getType(), data.getStatus());
             }
         });
 

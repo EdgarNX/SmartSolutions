@@ -5,22 +5,22 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.viewpager.widget.ViewPager;
 
-import com.google.android.material.tabs.TabLayout;
 import com.neo.smartsolutions.HomeActivity;
 import com.neo.smartsolutions.R;
 import com.neo.smartsolutions.home.Listener;
-import com.neo.smartsolutions.home.TabAdapter;
-import com.neo.smartsolutions.locations.LocationFragmentTab;
-import com.neo.smartsolutions.solutions.SolutionFragmentTab;
 
 public class RelayFragment extends Fragment {
 
     private Listener listener;
+
+    ImageButton buttonBack;
+    ImageView imageOnOff;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -29,7 +29,12 @@ public class RelayFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
+        buttonBack = view.findViewById(R.id.backImageButton);
+        buttonBack.setOnClickListener(backOnClick);
 
+        imageOnOff = view.findViewById(R.id.imageOnOff);
+        imageOnOff.setOnClickListener(onOffButtonOnClick);
+        setImageOnOff();
     }
 
     @Override
@@ -42,4 +47,37 @@ public class RelayFragment extends Fragment {
                     + " must implement Listener");
         }
     }
+
+    //methods
+
+    private void setImageOnOff() {
+        if ("on".equals(HomeActivity.DEVICE_STATUS)) {
+            imageOnOff.setImageResource(R.drawable.ic_power_on);
+        } else {
+            imageOnOff.setImageResource(R.drawable.ic_power_of);
+        }
+    }
+
+    //listeners
+
+    private final View.OnClickListener backOnClick = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            listener.onBackPressedToDeviceFragment();
+        }
+    };
+
+    private final View.OnClickListener onOffButtonOnClick = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+
+            if ("on".equals(HomeActivity.DEVICE_STATUS)) {
+                listener.onOnOffButtonPressedInRelayFragment("off");
+            } else {
+                listener.onOnOffButtonPressedInRelayFragment("on");
+            }
+
+            setImageOnOff();
+        }
+    };
 }

@@ -17,6 +17,8 @@ import android.widget.Toast;
 import com.google.android.material.navigation.NavigationView;
 import com.neo.smartsolutions.devices.AddDeviceFragment;
 import com.neo.smartsolutions.devices.DeviceFragment;
+import com.neo.smartsolutions.devices.device_types.IntensityFragment;
+import com.neo.smartsolutions.devices.device_types.RelayFragment;
 import com.neo.smartsolutions.home.HomeFragment;
 import com.neo.smartsolutions.home.Listener;
 import com.neo.smartsolutions.locations.AddLocationFragment;
@@ -26,12 +28,14 @@ import java.util.Objects;
 
 public class HomeActivity extends MainActivity implements NavigationView.OnNavigationItemSelectedListener, Listener {
 
+    public static String DEVICE_STATUS = "notSet";
     public static final int CONTROL_MODE_CODE = 0;
     public static final int SOLUTIONS_MODE_CODE = 1;
     private TextView toolbar_title;
     private Menu menu;
 
     private String currentLocation;
+    private String currentDevice;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +58,6 @@ public class HomeActivity extends MainActivity implements NavigationView.OnNavig
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.setCheckedItem(R.id.nav_home);
 
-//        beginTransactionToAnotherFragment(new HomeFragment(),"Locations", true);
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.frameLayout,  new HomeFragment()).commit();
         drawer.closeDrawer(GravityCompat.START);
@@ -80,18 +83,12 @@ public class HomeActivity extends MainActivity implements NavigationView.OnNavig
         if (id == R.id.buttonAdd) {
             if ("Locations".equals(toolbar_title.getText().toString())) {
                 beginTransactionToAnotherFragment(new AddLocationFragment(),"Add locations",false);
-//                setActionBarTitle("Add locations");
-//                menu.findItem(R.id.buttonAdd).setVisible(false);
             } else if ("Solutions".equals(toolbar_title.getText().toString())) {
                 //todo add here the add solution
                 beginTransactionToAnotherFragment(new SettingsFragment(),"Settings", false);
-//                setActionBarTitle("Settings");
-//                menu.findItem(R.id.buttonAdd).setVisible(false);
             } else {
                 //todo when an home page is opened here
                 beginTransactionToAnotherFragment(new AddDeviceFragment(),"Add device", false);
-//                setActionBarTitle("Add device");
-//                menu.findItem(R.id.buttonAdd).setVisible(false);
             }
         }
 
@@ -103,25 +100,17 @@ public class HomeActivity extends MainActivity implements NavigationView.OnNavig
         int id = item.getItemId();
 
         if (id == R.id.nav_home) {
-            Toast.makeText(HomeActivity.this, "home", Toast.LENGTH_LONG).show();
+            //Toast.makeText(HomeActivity.this, "home", Toast.LENGTH_LONG).show();
             beginTransactionToAnotherFragment(new HomeFragment(), "Locations", true);
-//            setActionBarTitle("Locations");
-//            menu.findItem(R.id.buttonAdd).setVisible(true);
         } else if (id == R.id.nav_help) {
-            Toast.makeText(HomeActivity.this, "help", Toast.LENGTH_LONG).show();
+            //Toast.makeText(HomeActivity.this, "help", Toast.LENGTH_LONG).show();
             beginTransactionToAnotherFragment(new SettingsFragment(), "Help", false);
-//            setActionBarTitle("Help");
-//            menu.findItem(R.id.buttonAdd).setVisible(false);
         } else if (id == R.id.nav_settings) {
-            Toast.makeText(HomeActivity.this, "settings", Toast.LENGTH_LONG).show();
+           //Toast.makeText(HomeActivity.this, "settings", Toast.LENGTH_LONG).show();
             beginTransactionToAnotherFragment(new SettingsFragment(), "Settings", false);
-//            setActionBarTitle("Settings");
-//            menu.findItem(R.id.buttonAdd).setVisible(false);
         } else if (id == R.id.nav_logout) {
-            Toast.makeText(HomeActivity.this, "logout", Toast.LENGTH_LONG).show();
+            //Toast.makeText(HomeActivity.this, "logout", Toast.LENGTH_LONG).show();
             beginTransactionToAnotherFragment(new SettingsFragment(), "Logout", false);
-//            setActionBarTitle("Logout");
-//            menu.findItem(R.id.buttonAdd).setVisible(false);
         }
         return true;
     }
@@ -148,6 +137,12 @@ public class HomeActivity extends MainActivity implements NavigationView.OnNavig
     private String getTheCurrentLocation() {
         return currentLocation;
     }
+
+    private void saveTheCurrentDevice(String deviceName) { currentDevice = deviceName; }
+
+    private String getTheCurrentDevice() {
+        return currentDevice;
+    }
     
     //listeners
     
@@ -164,13 +159,12 @@ public class HomeActivity extends MainActivity implements NavigationView.OnNavig
     public void onBackPressedToLocationFragment() {
         //todo reload here the hole array of locations
         beginTransactionToAnotherFragment(new HomeFragment(), "Locations", true);
-//        setActionBarTitle("Locations");
-//        menu.findItem(R.id.buttonAdd).setVisible(true);
     }
 
     @Override
     public void onSubmitButtonPressedFromLocation(String name, String city, String street, int number) {
-        Toast.makeText(HomeActivity.this, name + city + street + number, Toast.LENGTH_LONG).show();
+        //todo reload here the hole array of locations
+        //Toast.makeText(HomeActivity.this, name + city + street + number, Toast.LENGTH_LONG).show();
         onBackPressedToLocationFragment();
     }
 
@@ -178,38 +172,49 @@ public class HomeActivity extends MainActivity implements NavigationView.OnNavig
     public void onLocationSelected(String locationName) {
         //todo load here the hole array of devices
         saveTheCurrentLocation(locationName);
-
         beginTransactionToAnotherFragment(new DeviceFragment(), locationName, true);
-//        setActionBarTitle(locationName);
-//        menu.findItem(R.id.buttonAdd).setVisible(true);
     }
 
     @Override
-    public void onDeviceSelected(String deviceName, String deviceType) {
+    public void onDeviceSelected(String deviceName, String deviceType, String status) {
         //todo here you can edit the devices
-        if("relay".equals(deviceType)) {
-            beginTransactionToAnotherFragment(new DeviceFragment(),deviceName,false);
 
+        saveTheCurrentDevice(deviceName);
+        DEVICE_STATUS = status;
+
+        if("relay".equals(deviceType)) {
+            beginTransactionToAnotherFragment(new RelayFragment(),deviceName,false);
         } else {
             //if it is intensity type
-            beginTransactionToAnotherFragment(new DeviceFragment(),deviceName,false);
+            beginTransactionToAnotherFragment(new IntensityFragment(),deviceName,false);
 
         }
     }
 
     @Override
-    public void onBackPressedFromAddDeviceFragment() {
+    public void onBackPressedToDeviceFragment() {
         //todo reload here the new hole array of devices
         beginTransactionToAnotherFragment(new DeviceFragment(),getTheCurrentLocation(),true);
-//        setActionBarTitle(getTheCurrentLocation());
-//        menu.findItem(R.id.buttonAdd).setVisible(true);
     }
 
     @Override
     public void onSubmitButtonPressedFromDevice(String name, String type, String code) {
         //todo don't forget the status to update in firebase
         Toast.makeText(HomeActivity.this, name + type + code, Toast.LENGTH_LONG).show();
-        onBackPressedFromAddDeviceFragment();
+        onBackPressedToDeviceFragment();
+    }
+
+    @Override
+    public void onOnOffButtonPressedInRelayFragment(String status) {
+        //todo change here the status what we obtain in the layout to be visible also in firebase
+        DEVICE_STATUS = status;
+    }
+
+    @Override
+    public void onIntensitySubmitButtonPressed(String status) {
+        //todo change here the status what we obtain in the layout to be visible also in firebase
+        Toast.makeText(HomeActivity.this, status, Toast.LENGTH_LONG).show();
+        DEVICE_STATUS = status;
     }
 
     @Override

@@ -78,7 +78,7 @@ public class LocationFragmentTab extends Fragment {
             @Override
             public void onItemClick(Location data) {
                 //todo from here we will fly to another frame where to add devices
-                Toast.makeText(getActivity(), data.getLocationName(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getActivity(), data.getLocationName(), Toast.LENGTH_SHORT).show();
                 listener.onLocationSelected(data.getLocationName());
             }
         });
