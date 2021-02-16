@@ -19,6 +19,7 @@ import com.neo.smartsolutions.devices.AddDeviceFragment;
 import com.neo.smartsolutions.devices.DeviceFragment;
 import com.neo.smartsolutions.devices.device_types.IntensityFragment;
 import com.neo.smartsolutions.devices.device_types.RelayFragment;
+import com.neo.smartsolutions.help.HelpFragment;
 import com.neo.smartsolutions.home.HomeFragment;
 import com.neo.smartsolutions.home.Listener;
 import com.neo.smartsolutions.locations.AddLocationFragment;
@@ -104,7 +105,7 @@ public class HomeActivity extends MainActivity implements NavigationView.OnNavig
             beginTransactionToAnotherFragment(new HomeFragment(), "Locations", true);
         } else if (id == R.id.nav_help) {
             //Toast.makeText(HomeActivity.this, "help", Toast.LENGTH_LONG).show();
-            beginTransactionToAnotherFragment(new SettingsFragment(), "Help", false);
+            beginTransactionToAnotherFragment(new HelpFragment(), "Help", false);
         } else if (id == R.id.nav_settings) {
            //Toast.makeText(HomeActivity.this, "settings", Toast.LENGTH_LONG).show();
             beginTransactionToAnotherFragment(new SettingsFragment(), "Settings", false);
