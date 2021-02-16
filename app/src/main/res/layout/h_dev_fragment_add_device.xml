@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/layout_background"
+    android:focusableInTouchMode="true"
+    tools:context=".devices.AddDeviceFragment">
+
+    <TextView
+        android:id="@+id/textDeviceName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text="@string/device_name"
+        android:textAllCaps="true"
+        android:textColor="@color/black"
+        android:textSize="13sp"
+        app:layout_constraintStart_toStartOf="@id/viewDeviceNameDivider"
+        app:layout_constraintTop_toBottomOf="@id/backImageButton" />
+
+    <EditText
+        android:id="@+id/inputDeviceName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:gravity="top"
+        android:hint="@string/garage_led_switch"
+        android:inputType="text"
+        android:minHeight="35dp"
+        android:textColor="@color/black"
+        android:textSize="17sp"
+        app:layout_constraintEnd_toEndOf="@id/viewDeviceNameDivider"
+        app:layout_constraintStart_toStartOf="@id/viewDeviceNameDivider"
+        app:layout_constraintTop_toBottomOf="@+id/textDeviceName"
+        tools:ignore="Autofill" />
+
+    <View
+        android:id="@+id/viewDeviceNameDivider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginEnd="50dp"
+        android:background="@color/black"
+        app:layout_constraintTop_toBottomOf="@+id/inputDeviceName" />
+
+    <TextView
+        android:id="@+id/textType"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text="@string/device_type"
+        android:textAllCaps="true"
+        android:textColor="@color/black"
+        android:textSize="13sp"
+        app:layout_constraintStart_toStartOf="@+id/viewTypeDivider"
+        app:layout_constraintTop_toTopOf="@id/viewDeviceNameDivider" />
+
+    <Spinner
+        android:id="@+id/device_spinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
+        android:layout_marginEnd="50dp"
+        app:layout_constraintEnd_toEndOf="@id/viewTypeDivider"
+        app:layout_constraintStart_toStartOf="@id/viewTypeDivider"
+        app:layout_constraintTop_toBottomOf="@+id/textType" />
+
+    <View
+        android:id="@+id/viewTypeDivider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginEnd="50dp"
+        android:background="@color/black"
+        app:layout_constraintTop_toBottomOf="@+id/device_spinner" />
+
+    <TextView
+        android:id="@+id/textCode"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text="@string/device_code"
+        android:textAllCaps="true"
+        android:textColor="@color/black"
+        android:textSize="13sp"
+        app:layout_constraintStart_toStartOf="@+id/viewCodeDivider"
+        app:layout_constraintTop_toTopOf="@id/viewTypeDivider" />
+
+    <EditText
+        android:id="@+id/inputCode"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:gravity="top"
+        android:hint="@string/_2qf_lfe"
+        android:inputType="text"
+        android:minHeight="35dp"
+        android:textColor="@color/black"
+        android:textSize="17sp"
+        app:layout_constraintEnd_toEndOf="@id/viewCodeDivider"
+        app:layout_constraintStart_toStartOf="@id/viewCodeDivider"
+        app:layout_constraintTop_toBottomOf="@+id/textCode"
+        tools:ignore="Autofill" />
+
+    <View
+        android:id="@+id/viewCodeDivider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginEnd="50dp"
+        android:background="@color/black"
+        app:layout_constraintTop_toBottomOf="@+id/inputCode" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/buttonSubmit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/roundedbutton"
+        android:backgroundTint="@null"
+        android:paddingHorizontal="32dp"
+        android:text="@string/submit_new_device"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/viewCodeDivider" />
+
+    <ImageButton
+        android:id="@+id/backImageButton"
+        android:layout_width="64dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/skin_back_button"
+        android:contentDescription="@string/app_name"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

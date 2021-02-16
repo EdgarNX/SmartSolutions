@@ -1,24 +1,16 @@
 package com.neo.smartsolutions.welcome;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.text.InputType;
-import android.text.TextUtils;
-import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 
 import com.neo.smartsolutions.R;
-
-import java.util.regex.Pattern;
 
 public class LogInFragment extends WelcomeResources {
 
@@ -29,12 +21,12 @@ public class LogInFragment extends WelcomeResources {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_log_in, container, false);
+        return inflater.inflate(R.layout.w_fragment_log_in, container, false);
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        inputEmail = view.findViewById(R.id.inputEmail);
+        inputEmail = view.findViewById(R.id.inputDeviceName);
         inputPassword = view.findViewById(R.id.inputPassword);
 
         imageVisible = view.findViewById(R.id.imageVisible);
@@ -46,7 +38,7 @@ public class LogInFragment extends WelcomeResources {
         Button logInButton = view.findViewById(R.id.buttonLogIn);
         logInButton.setOnClickListener(logInOnClick);
 
-        buttonBack = (ImageButton) view.findViewById(R.id.backImageButton);
+        buttonBack = view.findViewById(R.id.backImageButton);
         buttonBack.setOnClickListener(backOnClick);
     }
 

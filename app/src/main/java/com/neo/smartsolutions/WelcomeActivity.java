@@ -2,6 +2,7 @@ package com.neo.smartsolutions;
 
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
 
@@ -12,21 +13,22 @@ import com.neo.smartsolutions.welcome.WelcomeFragment;
 
 public class WelcomeActivity extends MainActivity implements OnPressedListener {
 
+    public static final String EMAIL_MESSAGE_KEY = "email";
     public static final int SIGN_UP_MODE_CODE = 0;
     public static final int LOG_IN_MODE_CODE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.welcome);
+        setContentView(R.layout.w_activity_welcome);
 
         if (savedInstanceState == null) {
             WelcomeFragment welcomeFragment = new WelcomeFragment();
 
-            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            FragmentTransaction fragment = getSupportFragmentManager().beginTransaction();
 
-            ft.add(R.id.form_placeholder, welcomeFragment);
-            ft.commit();
+            fragment.add(R.id.form_placeholder, welcomeFragment);
+            fragment.commit();
         }
     }
 
@@ -38,7 +40,7 @@ public class WelcomeActivity extends MainActivity implements OnPressedListener {
             getSupportFragmentManager()
                     .beginTransaction()
                     .setCustomAnimations(R.anim.slide_in_up, R.anim.slide_out_up, R.anim.slide_in_up, R.anim.slide_out_up)
-                    .replace(R.id.form_placeholder, singUpFragment) // replace flContainer
+                    .replace(R.id.form_placeholder, singUpFragment)
                     .addToBackStack(null)
                     .commit();
         } else {
@@ -47,7 +49,7 @@ public class WelcomeActivity extends MainActivity implements OnPressedListener {
             getSupportFragmentManager()
                     .beginTransaction()
                     .setCustomAnimations(R.anim.slide_in_up, R.anim.slide_out_up, R.anim.slide_in_up, R.anim.slide_out_up)
-                    .replace(R.id.form_placeholder, logInFragment) // replace flContainer
+                    .replace(R.id.form_placeholder, logInFragment)
                     .addToBackStack(null)
                     .commit();
         }
@@ -61,11 +63,18 @@ public class WelcomeActivity extends MainActivity implements OnPressedListener {
     @Override
     public void onSignUpButtonPressed(String email, String password, String country) {
         Toast.makeText(WelcomeActivity.this, email + password + country, Toast.LENGTH_LONG).show();
+        goToTheNextActivity("edgarnemeth@gmail.com");
     }
 
     @Override
     public void onLogInButtonPressed(String email, String password) {
         Toast.makeText(WelcomeActivity.this, email + password, Toast.LENGTH_LONG).show();
+        goToTheNextActivity("edgarnemeth@gmail.com");
+    }
 
+    private void goToTheNextActivity(String email) {
+        Intent intentToBaseActivity = new Intent(WelcomeActivity.this, HomeActivity.class);
+        intentToBaseActivity.putExtra(EMAIL_MESSAGE_KEY, email);
+        startActivity(intentToBaseActivity);
     }
 }
