@@ -2,12 +2,15 @@ package com.neo.smartsolutions;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -15,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 import com.neo.smartsolutions.devices.AddDeviceFragment;
 import com.neo.smartsolutions.devices.DeviceFragment;
 import com.neo.smartsolutions.devices.device_types.IntensityFragment;
@@ -60,8 +64,32 @@ public class HomeActivity extends MainActivity implements NavigationView.OnNavig
         navigationView.setCheckedItem(R.id.nav_home);
 
         FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.frameLayout,  new HomeFragment()).commit();
+        fragmentManager.beginTransaction().replace(R.id.frameLayout, new HomeFragment()).commit();
         drawer.closeDrawer(GravityCompat.START);
+
+        mAuth = FirebaseAuth.getInstance();
+    }
+
+    //firebase
+
+    private void logOut() {
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        alert.setMessage(R.string.logout_question);
+        alert.setCancelable(false);
+        alert.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                mAuth.signOut();
+                onLogOut();
+            }
+        });
+        alert.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+        alert.show();
     }
 
     //navigation drawer
@@ -83,13 +111,13 @@ public class HomeActivity extends MainActivity implements NavigationView.OnNavig
 
         if (id == R.id.buttonAdd) {
             if ("Locations".equals(toolbar_title.getText().toString())) {
-                beginTransactionToAnotherFragment(new AddLocationFragment(),"Add locations",false);
+                beginTransactionToAnotherFragment(new AddLocationFragment(), "Add locations", false);
             } else if ("Solutions".equals(toolbar_title.getText().toString())) {
                 //todo add here the add solution
-                beginTransactionToAnotherFragment(new SettingsFragment(),"Settings", false);
+                beginTransactionToAnotherFragment(new SettingsFragment(), "Settings", false);
             } else {
                 //todo when an home page is opened here
-                beginTransactionToAnotherFragment(new AddDeviceFragment(),"Add device", false);
+                beginTransactionToAnotherFragment(new AddDeviceFragment(), "Add device", false);
             }
         }
 
@@ -107,17 +135,22 @@ public class HomeActivity extends MainActivity implements NavigationView.OnNavig
             //Toast.makeText(HomeActivity.this, "help", Toast.LENGTH_LONG).show();
             beginTransactionToAnotherFragment(new HelpFragment(), "Help", false);
         } else if (id == R.id.nav_settings) {
-           //Toast.makeText(HomeActivity.this, "settings", Toast.LENGTH_LONG).show();
+            //Toast.makeText(HomeActivity.this, "settings", Toast.LENGTH_LONG).show();
             beginTransactionToAnotherFragment(new SettingsFragment(), "Settings", false);
         } else if (id == R.id.nav_logout) {
             //Toast.makeText(HomeActivity.this, "logout", Toast.LENGTH_LONG).show();
-            beginTransactionToAnotherFragment(new SettingsFragment(), "Logout", false);
+            logOut();
         }
         return true;
     }
 
-    //methods 
-    
+    //methods
+    private void onLogOut() {
+        //todo clear here the database
+        Intent intentToWelcomeActivity = new Intent(HomeActivity.this, WelcomeActivity.class);
+        startActivity(intentToWelcomeActivity);
+    }
+
     public void beginTransactionToAnotherFragment(Fragment fragment, String layoutTitle, boolean shotAddButton) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
@@ -133,20 +166,24 @@ public class HomeActivity extends MainActivity implements NavigationView.OnNavig
         menu.findItem(R.id.buttonAdd).setVisible(shotAddButton);
     }
 
-    private void saveTheCurrentLocation(String locationName) { currentLocation = locationName; }
+    private void saveTheCurrentLocation(String locationName) {
+        currentLocation = locationName;
+    }
 
     private String getTheCurrentLocation() {
         return currentLocation;
     }
 
-    private void saveTheCurrentDevice(String deviceName) { currentDevice = deviceName; }
+    private void saveTheCurrentDevice(String deviceName) {
+        currentDevice = deviceName;
+    }
 
     private String getTheCurrentDevice() {
         return currentDevice;
     }
-    
+
     //listeners
-    
+
     @Override
     public void onTabModeSelected(int mode) {
         if (mode == CONTROL_MODE_CODE) {
@@ -183,11 +220,11 @@ public class HomeActivity extends MainActivity implements NavigationView.OnNavig
         saveTheCurrentDevice(deviceName);
         DEVICE_STATUS = status;
 
-        if("relay".equals(deviceType)) {
-            beginTransactionToAnotherFragment(new RelayFragment(),deviceName,false);
+        if ("relay".equals(deviceType)) {
+            beginTransactionToAnotherFragment(new RelayFragment(), deviceName, false);
         } else {
             //if it is intensity type
-            beginTransactionToAnotherFragment(new IntensityFragment(),deviceName,false);
+            beginTransactionToAnotherFragment(new IntensityFragment(), deviceName, false);
 
         }
     }
@@ -195,7 +232,7 @@ public class HomeActivity extends MainActivity implements NavigationView.OnNavig
     @Override
     public void onBackPressedToDeviceFragment() {
         //todo reload here the new hole array of devices
-        beginTransactionToAnotherFragment(new DeviceFragment(),getTheCurrentLocation(),true);
+        beginTransactionToAnotherFragment(new DeviceFragment(), getTheCurrentLocation(), true);
     }
 
     @Override

@@ -55,10 +55,10 @@ public class SingUpFragment extends WelcomeResources implements AdapterView.OnIt
         inputPassword = view.findViewById(R.id.inputPassword);
 
         imageVisible = view.findViewById(R.id.imageVisible);
-        imageVisible.setOnClickListener(closedEyeOnClick);
+        imageVisible.setOnClickListener(openEyeOnClick);
 
         imageNotVisible = view.findViewById(R.id.imageNotVisible);
-        imageNotVisible.setOnClickListener(openEyeOnClick);
+        imageNotVisible.setOnClickListener(closedEyeOnClick);
 
         checkBoxIAccept = view.findViewById(R.id.checkBoxIAccept);
         checkBoxIAccept.setOnTouchListener(checkBoxOnTouch);
