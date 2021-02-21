@@ -12,13 +12,19 @@ import androidx.fragment.app.FragmentManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.neo.smartsolutions.devices.AddDeviceFragment;
 import com.neo.smartsolutions.devices.DeviceFragment;
 import com.neo.smartsolutions.devices.device_types.IntensityFragment;
@@ -29,6 +35,8 @@ import com.neo.smartsolutions.home.Listener;
 import com.neo.smartsolutions.locations.AddLocationFragment;
 import com.neo.smartsolutions.settings.SettingsFragment;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 public class HomeActivity extends MainActivity implements NavigationView.OnNavigationItemSelectedListener, Listener {
@@ -42,10 +50,17 @@ public class HomeActivity extends MainActivity implements NavigationView.OnNavig
     private String currentLocation;
     private String currentDevice;
 
+    private String currentUserEmail = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.b_activity_base);
+
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            currentUserEmail = bundle.getString(WelcomeActivity.EMAIL_MESSAGE_KEY);
+        }
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -63,11 +78,16 @@ public class HomeActivity extends MainActivity implements NavigationView.OnNavig
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.setCheckedItem(R.id.nav_home);
 
+        View headerView = navigationView.getHeaderView(0);
+        TextView textUserEmail = (TextView) headerView.findViewById(R.id.textUserEmail);
+        textUserEmail.setText(currentUserEmail);
+
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.frameLayout, new HomeFragment()).commit();
         drawer.closeDrawer(GravityCompat.START);
 
-        mAuth = FirebaseAuth.getInstance();
+        fAuth = FirebaseAuth.getInstance();
+        fStore = FirebaseFirestore.getInstance();
     }
 
     //firebase
@@ -79,7 +99,7 @@ public class HomeActivity extends MainActivity implements NavigationView.OnNavig
         alert.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                mAuth.signOut();
+                fAuth.signOut();
                 onLogOut();
             }
         });
@@ -90,6 +110,62 @@ public class HomeActivity extends MainActivity implements NavigationView.OnNavig
             }
         });
         alert.show();
+    }
+
+    private void addLocationInDatabase(String name, String city, String street, int number) {
+        String userID = Objects.requireNonNull(fAuth.getCurrentUser()).getUid();
+
+        Map<String, Object> location = new HashMap<>();
+        location.put("name", name);
+        location.put("city", city);
+        location.put("street", street);
+        location.put("number", number);
+
+        fStore.collection("users")
+                .document(userID)
+                .collection(name)
+                .document("informations")
+                .set(location)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.e(TAG_STORAGE, "Added");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.e(TAG_STORAGE, "Error adding document", e);
+                    }
+                });
+    }
+
+    private void addDeviceInDatabase(String name, String city, String street, int number) {
+        String userID = Objects.requireNonNull(fAuth.getCurrentUser()).getUid();
+
+        Map<String, Object> location = new HashMap<>();
+        location.put("name", name);
+        location.put("city", city);
+        location.put("street", street);
+        location.put("number", number);
+
+        fStore.collection("users")
+                .document(userID)
+                .collection(name)
+                .document("informations")
+                .set(location)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.e(TAG_STORAGE, "Added");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.e(TAG_STORAGE, "Error adding document", e);
+                    }
+                });
     }
 
     //navigation drawer
@@ -174,9 +250,7 @@ public class HomeActivity extends MainActivity implements NavigationView.OnNavig
         return currentLocation;
     }
 
-    private void saveTheCurrentDevice(String deviceName) {
-        currentDevice = deviceName;
-    }
+    private void saveTheCurrentDevice(String deviceName) { currentDevice = deviceName; }
 
     private String getTheCurrentDevice() {
         return currentDevice;
@@ -200,9 +274,9 @@ public class HomeActivity extends MainActivity implements NavigationView.OnNavig
     }
 
     @Override
-    public void onSubmitButtonPressedFromLocation(String name, String city, String street, int number) {
+    public void onSubmitButtonPressedFromAddLocation(String name, String city, String street, int number) {
         //todo reload here the hole array of locations
-        //Toast.makeText(HomeActivity.this, name + city + street + number, Toast.LENGTH_LONG).show();
+        addLocationInDatabase(name, city, street, number);
         onBackPressedToLocationFragment();
     }
 

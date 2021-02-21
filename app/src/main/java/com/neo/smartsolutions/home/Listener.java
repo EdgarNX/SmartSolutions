@@ -5,7 +5,7 @@ public interface Listener {
 
     void onLocationSelected(String locationName);
     void onBackPressedToLocationFragment();
-    void onSubmitButtonPressedFromLocation(String name, String city, String street, int number);
+    void onSubmitButtonPressedFromAddLocation(String name, String city, String street, int number);
 
     void onDeviceSelected(String deviceName, String deviceType, String Status);
     void onBackPressedToDeviceFragment();

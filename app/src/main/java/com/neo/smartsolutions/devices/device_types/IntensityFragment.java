@@ -24,7 +24,7 @@ public class IntensityFragment extends Fragment {
 
     private Listener listener;
 
-    ImageButton buttonBack;
+    Button buttonBack;
     TextView intensityTextView;
     BubbleSeekBar intensitySeekBar;
     Button buttonSubmitIntensity;

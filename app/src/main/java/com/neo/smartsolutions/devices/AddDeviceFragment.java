@@ -29,7 +29,7 @@ public class AddDeviceFragment extends Fragment implements AdapterView.OnItemSel
 
     private Listener listener;
 
-    ImageButton buttonBack;
+    Button buttonBack;
     EditText textDeviceName;
     EditText inputCode;
     Spinner spinnerDevice;

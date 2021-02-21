@@ -10,4 +10,6 @@
     <color name="color_back_ground">#C6000000</color>
 
     <color name="base_green">#6DC197</color>
+    <color name="back">#D60701</color>
+
 </resources>
