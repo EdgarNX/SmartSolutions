@@ -9,7 +9,7 @@ public interface Listener {
 
     void onDeviceSelected(String deviceName, String deviceType, String Status);
     void onBackPressedToDeviceFragment();
-    void onSubmitButtonPressedFromDevice(String name, String type, String code);
+    void onSubmitButtonPressedFromAddDevice(String name, String type, String code);
 
     void  onOnOffButtonPressedInRelayFragment(String status);
     void onIntensitySubmitButtonPressed(String status);

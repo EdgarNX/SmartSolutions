@@ -12,7 +12,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -109,7 +108,7 @@ public class AddDeviceFragment extends Fragment implements AdapterView.OnItemSel
         if (!name.isEmpty()) {
             if (deviceSpinnerWasTouched) {
                 if (!code.isEmpty()) {
-                    listener.onSubmitButtonPressedFromDevice(name, type, code);
+                    listener.onSubmitButtonPressedFromAddDevice(name, type, code);
                 } else {
                     inputCode.setError("Please complete the code field.");
                 }

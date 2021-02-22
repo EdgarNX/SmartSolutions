@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "870543437264",
+    "project_id": "smartsolutions-d090c",
+    "storage_bucket": "smartsolutions-d090c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:870543437264:android:d383f0a2a49fe227725dd5",
+        "android_client_info": {
+          "package_name": "com.neo.smartsolutions"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "870543437264-v490k4rmivufka9e8si48vm4o9po1d27.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.neo.smartsolutions",
+            "certificate_hash": "337dfc9e53f47842be54692fe4b0a220d8116e0a"
+          }
+        },
+        {
+          "client_id": "870543437264-su8cjn4hjk8j3rtj0kklere6ook4d9ad.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBCBKMgq4PSRHlxF9PIqGaguLlgX2qzN5k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "870543437264-su8cjn4hjk8j3rtj0kklere6ook4d9ad.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

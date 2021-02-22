@@ -9,17 +9,28 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.neo.smartsolutions.locations.location_local_db.LocationViewModel;
 
 public abstract class MainActivity extends AppCompatActivity {
 
     static final String TAG_AUTH = "AUTH";
     static final String TAG_STORAGE = "STORE";
 
+    LocationViewModel mLocationViewModel;
+
     FirebaseAuth fAuth;
     FirebaseFirestore fStore;
+
+    public void getDatabasesInstantiated() {
+        fAuth = FirebaseAuth.getInstance();
+        fStore = FirebaseFirestore.getInstance();
+
+        mLocationViewModel = new ViewModelProvider(this).get(LocationViewModel.class);
+    }
 
     private ProgressDialog mProgressDialog;
 

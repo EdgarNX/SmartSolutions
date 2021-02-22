@@ -9,6 +9,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -22,9 +23,6 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.navigation.NavigationView;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.neo.smartsolutions.devices.AddDeviceFragment;
 import com.neo.smartsolutions.devices.DeviceFragment;
 import com.neo.smartsolutions.devices.device_types.IntensityFragment;
@@ -34,6 +32,7 @@ import com.neo.smartsolutions.home.HomeFragment;
 import com.neo.smartsolutions.home.Listener;
 import com.neo.smartsolutions.locations.AddLocationFragment;
 import com.neo.smartsolutions.settings.SettingsFragment;
+import com.neo.smartsolutions.locations.location_local_db.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -50,17 +49,12 @@ public class HomeActivity extends MainActivity implements NavigationView.OnNavig
     private String currentLocation;
     private String currentDevice;
 
-    private String currentUserEmail = "";
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.b_activity_base);
 
-        Bundle bundle = getIntent().getExtras();
-        if (bundle != null) {
-            currentUserEmail = bundle.getString(WelcomeActivity.EMAIL_MESSAGE_KEY);
-        }
+        getDatabasesInstantiated();
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -80,14 +74,12 @@ public class HomeActivity extends MainActivity implements NavigationView.OnNavig
 
         View headerView = navigationView.getHeaderView(0);
         TextView textUserEmail = (TextView) headerView.findViewById(R.id.textUserEmail);
+        String currentUserEmail = fAuth.getCurrentUser().getEmail();
         textUserEmail.setText(currentUserEmail);
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.frameLayout, new HomeFragment()).commit();
         drawer.closeDrawer(GravityCompat.START);
-
-        fAuth = FirebaseAuth.getInstance();
-        fStore = FirebaseFirestore.getInstance();
     }
 
     //firebase
@@ -100,6 +92,7 @@ public class HomeActivity extends MainActivity implements NavigationView.OnNavig
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 fAuth.signOut();
+                mLocationViewModel.deleteAll();
                 onLogOut();
             }
         });
@@ -123,8 +116,8 @@ public class HomeActivity extends MainActivity implements NavigationView.OnNavig
 
         fStore.collection("users")
                 .document(userID)
-                .collection(name)
-                .document("informations")
+                .collection("locations")
+                .document(name)
                 .set(location)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
@@ -140,20 +133,20 @@ public class HomeActivity extends MainActivity implements NavigationView.OnNavig
                 });
     }
 
-    private void addDeviceInDatabase(String name, String city, String street, int number) {
+    private void addDeviceInDatabase(String name, String type, String code) {
         String userID = Objects.requireNonNull(fAuth.getCurrentUser()).getUid();
+        String location = getTheCurrentLocation();
 
-        Map<String, Object> location = new HashMap<>();
-        location.put("name", name);
-        location.put("city", city);
-        location.put("street", street);
-        location.put("number", number);
+        Map<String, Object> device = new HashMap<>();
+        device.put("name", name);
+        device.put("type", type);
+        device.put("code", code);
 
         fStore.collection("users")
                 .document(userID)
-                .collection(name)
-                .document("informations")
-                .set(location)
+                .collection(location)
+                .document(name)
+                .set(device)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
@@ -192,11 +185,9 @@ public class HomeActivity extends MainActivity implements NavigationView.OnNavig
                 //todo add here the add solution
                 beginTransactionToAnotherFragment(new SettingsFragment(), "Settings", false);
             } else {
-                //todo when an home page is opened here
                 beginTransactionToAnotherFragment(new AddDeviceFragment(), "Add device", false);
             }
         }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -205,24 +196,27 @@ public class HomeActivity extends MainActivity implements NavigationView.OnNavig
         int id = item.getItemId();
 
         if (id == R.id.nav_home) {
-            //Toast.makeText(HomeActivity.this, "home", Toast.LENGTH_LONG).show();
-            beginTransactionToAnotherFragment(new HomeFragment(), "Locations", true);
+            if (!"Locations".equals(toolbar_title.getText().toString())) {
+                beginTransactionToAnotherFragment(new HomeFragment(), "Locations", true);
+            }
         } else if (id == R.id.nav_help) {
-            //Toast.makeText(HomeActivity.this, "help", Toast.LENGTH_LONG).show();
             beginTransactionToAnotherFragment(new HelpFragment(), "Help", false);
         } else if (id == R.id.nav_settings) {
-            //Toast.makeText(HomeActivity.this, "settings", Toast.LENGTH_LONG).show();
             beginTransactionToAnotherFragment(new SettingsFragment(), "Settings", false);
         } else if (id == R.id.nav_logout) {
-            //Toast.makeText(HomeActivity.this, "logout", Toast.LENGTH_LONG).show();
             logOut();
         }
         return true;
     }
 
     //methods
+
+    void addLocationInLocalDb(String number, String city, String street, String name) {
+        Location location = new Location(name, city, street, number);
+        mLocationViewModel.insert(location);
+    }
+
     private void onLogOut() {
-        //todo clear here the database
         Intent intentToWelcomeActivity = new Intent(HomeActivity.this, WelcomeActivity.class);
         startActivity(intentToWelcomeActivity);
     }
@@ -250,7 +244,9 @@ public class HomeActivity extends MainActivity implements NavigationView.OnNavig
         return currentLocation;
     }
 
-    private void saveTheCurrentDevice(String deviceName) { currentDevice = deviceName; }
+    private void saveTheCurrentDevice(String deviceName) {
+        currentDevice = deviceName;
+    }
 
     private String getTheCurrentDevice() {
         return currentDevice;
@@ -269,14 +265,13 @@ public class HomeActivity extends MainActivity implements NavigationView.OnNavig
 
     @Override
     public void onBackPressedToLocationFragment() {
-        //todo reload here the hole array of locations
         beginTransactionToAnotherFragment(new HomeFragment(), "Locations", true);
     }
 
     @Override
     public void onSubmitButtonPressedFromAddLocation(String name, String city, String street, int number) {
-        //todo reload here the hole array of locations
         addLocationInDatabase(name, city, street, number);
+        addLocationInLocalDb(name, city, street, Integer.toString(number));
         onBackPressedToLocationFragment();
     }
 
@@ -310,9 +305,9 @@ public class HomeActivity extends MainActivity implements NavigationView.OnNavig
     }
 
     @Override
-    public void onSubmitButtonPressedFromDevice(String name, String type, String code) {
+    public void onSubmitButtonPressedFromAddDevice(String name, String type, String code) {
         //todo don't forget the status to update in firebase
-        Toast.makeText(HomeActivity.this, name + type + code, Toast.LENGTH_LONG).show();
+        addDeviceInDatabase(name, type, code);
         onBackPressedToDeviceFragment();
     }
 

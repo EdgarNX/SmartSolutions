@@ -1,32 +1,30 @@
 package com.neo.smartsolutions;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.Toast;
 
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.common.api.GoogleApi;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.GoogleAuthProvider;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.neo.smartsolutions.locations.location_local_db.Location;
+import com.neo.smartsolutions.locations.location_local_db.LocationViewModel;
 import com.neo.smartsolutions.welcome.LogInFragment;
 import com.neo.smartsolutions.welcome.OnPressedListener;
 import com.neo.smartsolutions.welcome.SingUpFragment;
@@ -38,8 +36,6 @@ import java.util.Objects;
 
 public class WelcomeActivity extends MainActivity implements OnPressedListener {
 
-    public static final String EMAIL_MESSAGE_KEY = "email";
-    public static final String UID_MESSAGE_KEY = "uid";
     public static final int SIGN_UP_MODE_CODE = 0;
     public static final int LOG_IN_MODE_CODE = 1;
 
@@ -47,6 +43,8 @@ public class WelcomeActivity extends MainActivity implements OnPressedListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.w_activity_welcome);
+
+        getDatabasesInstantiated();
 
         if (savedInstanceState == null) {
             WelcomeFragment welcomeFragment = new WelcomeFragment();
@@ -56,9 +54,6 @@ public class WelcomeActivity extends MainActivity implements OnPressedListener {
             fragment.add(R.id.form_placeholder, welcomeFragment);
             fragment.commit();
         }
-
-        fAuth = FirebaseAuth.getInstance();
-        fStore = FirebaseFirestore.getInstance();
     }
 
     //firebase
@@ -85,6 +80,9 @@ public class WelcomeActivity extends MainActivity implements OnPressedListener {
                 if (!task.isSuccessful()) {
                     hideProgressDialog();
                     Toast.makeText(WelcomeActivity.this, Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_SHORT).show();
+                } else {
+                    downloadLocationsAndStoreLocally();
+                    downloadDevicesAndStoreLocally();
                 }
             }
         });
@@ -114,6 +112,40 @@ public class WelcomeActivity extends MainActivity implements OnPressedListener {
                 });
     }
 
+    private void downloadLocationsAndStoreLocally() {
+        String userID = Objects.requireNonNull(fAuth.getCurrentUser()).getUid();
+
+        CollectionReference docRef = fStore.collection("users").document(userID).collection("locations");
+        docRef.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    QuerySnapshot document = task.getResult();
+                    if (!document.isEmpty()) {
+                        document.getDocuments().forEach((temp) -> {
+                            addLocationInLocalDb(temp.get("number").toString(),temp.get("city").toString(),temp.get("street").toString(),temp.get("name").toString());
+                        });
+                        Log.e(TAG_STORAGE, "DocumentSnapshot data: " + document.toString());
+                    } else {
+                        Log.e(TAG_STORAGE, "No such document");
+                    }
+                } else {
+                    Log.e(TAG_STORAGE, "get failed with ", task.getException());
+                }
+            }
+        });
+    }
+
+    void addLocationInLocalDb(String number, String city, String street, String name) {
+        Location location = new Location(name,city,street,number);
+        mLocationViewModel.insert(location);
+    }
+
+    private void downloadDevicesAndStoreLocally() {
+        //todo do what the name tells you :))
+    }
+
     //methods
 
     @Override
@@ -140,11 +172,7 @@ public class WelcomeActivity extends MainActivity implements OnPressedListener {
     }
 
     private void goToTheNextActivity() {
-        FirebaseUser currentUser = fAuth.getCurrentUser();
-
         Intent intentToHomeActivity = new Intent(WelcomeActivity.this, HomeActivity.class);
-        intentToHomeActivity.putExtra(EMAIL_MESSAGE_KEY, currentUser.getEmail());
-        intentToHomeActivity.putExtra(UID_MESSAGE_KEY, currentUser.getUid());
         startActivity(intentToHomeActivity);
     }
 

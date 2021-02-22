@@ -5,31 +5,25 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.neo.smartsolutions.R;
-import com.neo.smartsolutions.devices.devices_recycler_view.Device;
+import com.neo.smartsolutions.locations.location_local_db.*;
 import com.neo.smartsolutions.home.Listener;
-import com.neo.smartsolutions.locations.location_recycler_view.ClickListener;
-import com.neo.smartsolutions.locations.location_recycler_view.Location;
-import com.neo.smartsolutions.locations.location_recycler_view.LocationAdapter;
-import com.neo.smartsolutions.welcome.LogInFragment;
+import com.neo.smartsolutions.locations.location_local_db.ClickListener;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class LocationFragmentTab extends Fragment {
 
     private Listener listener;
-    private List<Location> locations;
-    private RecyclerView recyclerViewLocations;
-    private LocationAdapter recyclerViewAdapter;
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -49,48 +43,31 @@ public class LocationFragmentTab extends Fragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        recyclerViewLocations = view.findViewById(R.id.recyclerViewLocations);
-        displayLocationsList();
-    }
 
-    // RecyclerView
-    private void fillWithLocations() {
-        locations = new ArrayList<>();
-        Location location;
-        for (int i = 0; i < 5; i++) {
-            location = new Location(i, "Home " + i, "Pancota ", "Muresului", i + 10);
-            locations.add(location);
-        }
-    }
-
-    private void addLocation(String name, String city, String street, int number) {
-        //todo add here the new locations to the database/firebase
-    }
-
-    private void setLocationsLayoutManager() {
+        RecyclerView recyclerViewLocations = view.findViewById(R.id.recyclerViewLocations);
+        final LocationListAdapter adapter = new LocationListAdapter(getActivity());
+        recyclerViewLocations.setAdapter(adapter);
         recyclerViewLocations.setLayoutManager(new LinearLayoutManager(getActivity()));
-    }
 
-    private void setLocationsAdapter() {
-        recyclerViewAdapter = new LocationAdapter(getActivity(), locations);
+        // Get a new or existing ViewModel from the ViewModelProvider.
+        LocationViewModel mLocationViewModel = new ViewModelProvider(this).get(LocationViewModel.class);
 
-        recyclerViewAdapter.setOnItemClickListener(new ClickListener<Location>() {
+        // Add an observer on the LiveData returned by getAlphabetizedWords.
+        // The onChanged() method fires when the observed data changes and the activity is
+        // in the foreground.
+        mLocationViewModel.getAllLocations().observe(getActivity(), new Observer<List<Location>>() {
             @Override
-            public void onItemClick(Location data) {
-                //todo from here we will fly to another frame where to add devices
-                //Toast.makeText(getActivity(), data.getLocationName(), Toast.LENGTH_SHORT).show();
-                listener.onLocationSelected(data.getLocationName());
+            public void onChanged(@Nullable final List<Location> locations) {
+                // Update the cached copy of the words in the adapter.
+                adapter.setLocations(locations);
             }
         });
 
-        recyclerViewLocations.setAdapter(recyclerViewAdapter);
-    }
-
-    private void displayLocationsList() {
-        fillWithLocations();
-
-        setLocationsLayoutManager();
-
-        setLocationsAdapter();
+        adapter.setOnItemClickListener(new ClickListener<Location>() {
+            @Override
+            public void onItemClick(Location data) {
+                listener.onLocationSelected(data.getName());
+            }
+        });
     }
 }
