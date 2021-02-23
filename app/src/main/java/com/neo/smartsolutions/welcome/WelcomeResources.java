@@ -26,7 +26,7 @@ public abstract class WelcomeResources extends Fragment {
     EditText inputPassword;
     ImageButton imageVisible;
     ImageButton imageNotVisible;
-    ImageButton buttonBack;
+    Button buttonBack;
 
     String email;
     String password;

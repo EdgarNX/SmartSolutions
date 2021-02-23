@@ -19,7 +19,7 @@ public class AddLocationFragment extends Fragment {
 
     private Listener listener;
 
-    ImageButton buttonBack;
+    Button buttonBack;
     EditText inputLocationName;
     EditText inputCity;
     EditText inputStreet;
@@ -78,7 +78,7 @@ public class AddLocationFragment extends Fragment {
             if (!city.isEmpty() && city.length() > 0) {
                 if (!street.isEmpty() && street.length() > 0) {
                     if (number != -1) {
-                        listener.onSubmitButtonPressedFromLocation(name, city, street, number);
+                        listener.onSubmitButtonPressedFromAddLocation(name, city, street, number);
                     } else {
                         inputNumber.setError("Please complete the number field.");
                     }

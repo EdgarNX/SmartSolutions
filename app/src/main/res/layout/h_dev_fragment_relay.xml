@@ -8,16 +8,22 @@
     android:focusableInTouchMode="true"
     tools:context=".devices.device_types.RelayFragment">
 
-    <ImageButton
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/backImageButton"
-        android:layout_width="64dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="24dp"
-        android:background="@drawable/skin_back_button"
-        android:contentDescription="@string/app_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/roundedbuttonback"
+        android:backgroundTint="@null"
+        android:paddingHorizontal="32dp"
+        android:text="@string/back"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
     <ImageView
         android:id="@+id/imageOnOff"
