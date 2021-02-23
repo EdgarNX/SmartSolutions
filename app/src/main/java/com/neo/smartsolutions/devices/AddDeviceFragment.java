@@ -18,7 +18,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import com.neo.smartsolutions.HomeActivity;
 import com.neo.smartsolutions.R;
+import com.neo.smartsolutions.WelcomeActivity;
 import com.neo.smartsolutions.home.Listener;
 
 import java.util.ArrayList;
@@ -108,7 +110,7 @@ public class AddDeviceFragment extends Fragment implements AdapterView.OnItemSel
         if (!name.isEmpty()) {
             if (deviceSpinnerWasTouched) {
                 if (!code.isEmpty()) {
-                    listener.onSubmitButtonPressedFromAddDevice(name, type, code);
+                    listener.onSubmitButtonPressedFromAddDevice(name,"description", "0", type, code);
                 } else {
                     inputCode.setError("Please complete the code field.");
                 }

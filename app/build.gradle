@@ -60,4 +60,9 @@ dependencies {
     annotationProcessor 'android.arch.persistence.room:compiler:1.1.1'
     annotationProcessor 'androidx.room:room-compiler:2.2.6'
 
+
+    implementation 'com.google.android.libraries.places:places:2.4.0'
+    implementation 'com.github.KwabenBerko:OpenWeatherMap-Android-Library:2.1.0'
+
+
 }

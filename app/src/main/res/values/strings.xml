@@ -46,4 +46,5 @@
     <string name="submit_intensity">Submit intensity</string>
     <string name="loading">Loading…</string>
     <string name="back">Back</string>
+    <string name="OPEN_WEATHER_MAP_API_KEY">"2cc7f28930a4f88e0891ffe97e04d918"</string>
 </resources>

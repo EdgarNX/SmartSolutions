@@ -10,8 +10,11 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -20,11 +23,16 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.navigation.NavigationView;
+import com.kwabenaberko.openweathermaplib.implementation.OpenWeatherMapHelper;
+import com.kwabenaberko.openweathermaplib.implementation.callback.CurrentWeatherCallback;
+import com.kwabenaberko.openweathermaplib.model.currentweather.CurrentWeather;
 import com.neo.smartsolutions.devices.AddDeviceFragment;
 import com.neo.smartsolutions.devices.DeviceFragment;
+import com.neo.smartsolutions.devices.device_local_db.Device;
 import com.neo.smartsolutions.devices.device_types.IntensityFragment;
 import com.neo.smartsolutions.devices.device_types.RelayFragment;
 import com.neo.smartsolutions.help.HelpFragment;
@@ -34,17 +42,23 @@ import com.neo.smartsolutions.locations.AddLocationFragment;
 import com.neo.smartsolutions.settings.SettingsFragment;
 import com.neo.smartsolutions.locations.location_local_db.*;
 
+import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
 public class HomeActivity extends MainActivity implements NavigationView.OnNavigationItemSelectedListener, Listener {
 
+    public static String CURRENTLOCATIONFORDATABASE;
     public static String DEVICE_STATUS = "notSet";
     public static final int CONTROL_MODE_CODE = 0;
     public static final int SOLUTIONS_MODE_CODE = 1;
     private TextView toolbar_title;
     private Menu menu;
+
+    private OpenWeatherMapHelper helper;
 
     private String currentLocation;
     private String currentDevice;
@@ -74,12 +88,14 @@ public class HomeActivity extends MainActivity implements NavigationView.OnNavig
 
         View headerView = navigationView.getHeaderView(0);
         TextView textUserEmail = (TextView) headerView.findViewById(R.id.textUserEmail);
-        String currentUserEmail = fAuth.getCurrentUser().getEmail();
+        String currentUserEmail = Objects.requireNonNull(fAuth.getCurrentUser()).getEmail();
         textUserEmail.setText(currentUserEmail);
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.frameLayout, new HomeFragment()).commit();
         drawer.closeDrawer(GravityCompat.START);
+
+        helper = new OpenWeatherMapHelper(getString(R.string.OPEN_WEATHER_MAP_API_KEY));
     }
 
     //firebase
@@ -93,6 +109,7 @@ public class HomeActivity extends MainActivity implements NavigationView.OnNavig
             public void onClick(DialogInterface dialogInterface, int i) {
                 fAuth.signOut();
                 mLocationViewModel.deleteAll();
+                mDeviceViewModel.deleteAll();
                 onLogOut();
             }
         });
@@ -133,18 +150,23 @@ public class HomeActivity extends MainActivity implements NavigationView.OnNavig
                 });
     }
 
-    private void addDeviceInDatabase(String name, String type, String code) {
+    private void addDeviceInDatabase(String name, String description, String type, String status, String code) {
         String userID = Objects.requireNonNull(fAuth.getCurrentUser()).getUid();
         String location = getTheCurrentLocation();
 
         Map<String, Object> device = new HashMap<>();
         device.put("name", name);
+        device.put("location", getTheCurrentLocation());
+        device.put("description", description);
         device.put("type", type);
+        device.put("status", status);
         device.put("code", code);
 
         fStore.collection("users")
                 .document(userID)
-                .collection(location)
+                .collection("locations")
+                .document(location)
+                .collection("devices")
                 .document(name)
                 .set(device)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -159,6 +181,27 @@ public class HomeActivity extends MainActivity implements NavigationView.OnNavig
                         Log.e(TAG_STORAGE, "Error adding document", e);
                     }
                 });
+    }
+
+    //weather
+
+    public void getCurrentLocationWeather(String city) {
+        helper.getCurrentWeatherByCityName("Pancota", new CurrentWeatherCallback() {
+            @Override
+            public void onSuccess(CurrentWeather currentWeather) {
+                Log.e(TAG_WEATHER, "Coordinates: " + currentWeather.getCoord().getLat() + ", "+currentWeather.getCoord().getLon() +"\n"
+                        +"Weather Description: " + currentWeather.getWeather().get(0).getDescription() + "\n"
+                        +"Temperature: " + currentWeather.getMain().getTempMax()+"\n"
+                        +"Wind Speed: " + currentWeather.getWind().getSpeed() + "\n"
+                        +"City, Country: " + currentWeather.getName() + ", " + currentWeather.getSys().getCountry()
+                );
+            }
+
+            @Override
+            public void onFailure(Throwable throwable) {
+                Log.e(TAG_WEATHER, throwable.getMessage());
+            }
+        });
     }
 
     //navigation drawer
@@ -211,9 +254,14 @@ public class HomeActivity extends MainActivity implements NavigationView.OnNavig
 
     //methods
 
-    void addLocationInLocalDb(String number, String city, String street, String name) {
+    void addLocationInLocalDb(String name, String city, String street, String number) {
         Location location = new Location(name, city, street, number);
         mLocationViewModel.insert(location);
+    }
+
+    private void addDeviceInLocalDb(String name, String description, String type, String status, String code) {
+        Device device = new Device(name,getTheCurrentLocation(), description, type, status, code);
+        mDeviceViewModel.insert(device);
     }
 
     private void onLogOut() {
@@ -238,6 +286,7 @@ public class HomeActivity extends MainActivity implements NavigationView.OnNavig
 
     private void saveTheCurrentLocation(String locationName) {
         currentLocation = locationName;
+        CURRENTLOCATIONFORDATABASE = locationName;
     }
 
     private String getTheCurrentLocation() {
@@ -283,32 +332,34 @@ public class HomeActivity extends MainActivity implements NavigationView.OnNavig
     }
 
     @Override
-    public void onDeviceSelected(String deviceName, String deviceType, String status) {
-        //todo here you can edit the devices
-
-        saveTheCurrentDevice(deviceName);
-        DEVICE_STATUS = status;
-
-        if ("relay".equals(deviceType)) {
-            beginTransactionToAnotherFragment(new RelayFragment(), deviceName, false);
-        } else {
-            //if it is intensity type
-            beginTransactionToAnotherFragment(new IntensityFragment(), deviceName, false);
-
-        }
-    }
-
-    @Override
     public void onBackPressedToDeviceFragment() {
         //todo reload here the new hole array of devices
         beginTransactionToAnotherFragment(new DeviceFragment(), getTheCurrentLocation(), true);
     }
 
     @Override
-    public void onSubmitButtonPressedFromAddDevice(String name, String type, String code) {
-        //todo don't forget the status to update in firebase
-        addDeviceInDatabase(name, type, code);
+    public void onSubmitButtonPressedFromAddDevice(String name, String description, String type, String status, String code) {
+        addDeviceInDatabase(name, description, type, status, code);
+        addDeviceInLocalDb(name, description, type, status, code);
+        Log.e(TAG_STORAGE, name + description + type + status + code);
+
         onBackPressedToDeviceFragment();
+    }
+
+    @Override
+    public void onDeviceSelected(String deviceName, String deviceType, String status) {
+        //todo here you can edit the devices
+
+        saveTheCurrentDevice(deviceName);
+        DEVICE_STATUS = status;
+
+        if ("Relay".equals(deviceType)) {
+            beginTransactionToAnotherFragment(new RelayFragment(), deviceName, false);
+        } else {
+            //if it is intensity type
+            beginTransactionToAnotherFragment(new IntensityFragment(), deviceName, false);
+
+        }
     }
 
     @Override

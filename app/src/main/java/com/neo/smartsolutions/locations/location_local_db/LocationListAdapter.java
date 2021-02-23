@@ -2,7 +2,6 @@ package com.neo.smartsolutions.locations.location_local_db;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -74,7 +73,7 @@ public class LocationListAdapter extends RecyclerView.Adapter<LocationListAdapte
         Location currentLocation = mLocations.get(position);
         holder.getTextViewTitle().setText(currentLocation.getName());
         holder.getTextViewLocation().setText(currentLocation.getLocation());
-        holder.getImageViewImage().setBackground(ContextCompat.getDrawable(mInflater.getContext(), R.drawable.smart_logo));
+        holder.getImageViewImage().setBackground(ContextCompat.getDrawable(mInflater.getContext(), R.drawable.ic_smart_logo));
         holder.getCardView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -87,7 +86,6 @@ public class LocationListAdapter extends RecyclerView.Adapter<LocationListAdapte
         mLocations = locations;
         notifyDataSetChanged();
     }
-
 
     // getItemCount() is called many times, and when it is first called,
     // mWords has not been updated (means initially, it's null, and we can't return null).

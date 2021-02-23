@@ -13,14 +13,17 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.neo.smartsolutions.devices.device_local_db.DeviceViewModel;
 import com.neo.smartsolutions.locations.location_local_db.LocationViewModel;
 
 public abstract class MainActivity extends AppCompatActivity {
 
     static final String TAG_AUTH = "AUTH";
     static final String TAG_STORAGE = "STORE";
+    static final String TAG_WEATHER = "WEATHER";
 
     LocationViewModel mLocationViewModel;
+    DeviceViewModel mDeviceViewModel;
 
     FirebaseAuth fAuth;
     FirebaseFirestore fStore;
@@ -30,6 +33,7 @@ public abstract class MainActivity extends AppCompatActivity {
         fStore = FirebaseFirestore.getInstance();
 
         mLocationViewModel = new ViewModelProvider(this).get(LocationViewModel.class);
+        mDeviceViewModel = new ViewModelProvider(this).get(DeviceViewModel.class);
     }
 
     private ProgressDialog mProgressDialog;
@@ -71,5 +75,4 @@ public abstract class MainActivity extends AppCompatActivity {
         }
         return super.dispatchTouchEvent(event);
     }
-
 }

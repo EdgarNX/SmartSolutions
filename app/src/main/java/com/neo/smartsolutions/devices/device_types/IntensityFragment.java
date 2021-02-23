@@ -44,7 +44,6 @@ public class IntensityFragment extends Fragment {
         intensityTextView = view.findViewById(R.id.intensityTextView);
         setAndStoreProgress(Integer.parseInt(HomeActivity.DEVICE_STATUS));
 
-
         buttonSubmitIntensity = view.findViewById(R.id.buttonSubmitIntensity);
         buttonSubmitIntensity.setOnClickListener(submitOnClick);
 

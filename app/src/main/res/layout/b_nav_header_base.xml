@@ -19,7 +19,7 @@
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
         android:contentDescription="@string/app_name"
-        android:src="@drawable/title" />
+        android:src="@drawable/ic_title" />
 
     <TextView
         android:id="@+id/textUserEmail"

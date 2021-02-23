@@ -23,6 +23,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.neo.smartsolutions.devices.device_local_db.Device;
 import com.neo.smartsolutions.locations.location_local_db.Location;
 import com.neo.smartsolutions.locations.location_local_db.LocationViewModel;
 import com.neo.smartsolutions.welcome.LogInFragment;
@@ -30,7 +31,9 @@ import com.neo.smartsolutions.welcome.OnPressedListener;
 import com.neo.smartsolutions.welcome.SingUpFragment;
 import com.neo.smartsolutions.welcome.WelcomeFragment;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -38,6 +41,8 @@ public class WelcomeActivity extends MainActivity implements OnPressedListener {
 
     public static final int SIGN_UP_MODE_CODE = 0;
     public static final int LOG_IN_MODE_CODE = 1;
+
+    List<String> nameList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,7 +87,8 @@ public class WelcomeActivity extends MainActivity implements OnPressedListener {
                     Toast.makeText(WelcomeActivity.this, Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_SHORT).show();
                 } else {
                     downloadLocationsAndStoreLocally();
-                    downloadDevicesAndStoreLocally();
+                    //nameList.add(temp.get("name").toString());
+                    //downloadDevicesAndStoreLocally(temp.get("name").toString());
                 }
             }
         });
@@ -124,7 +130,34 @@ public class WelcomeActivity extends MainActivity implements OnPressedListener {
                     QuerySnapshot document = task.getResult();
                     if (!document.isEmpty()) {
                         document.getDocuments().forEach((temp) -> {
-                            addLocationInLocalDb(temp.get("number").toString(),temp.get("city").toString(),temp.get("street").toString(),temp.get("name").toString());
+                            addLocationInLocalDb(Objects.requireNonNull(temp.get("number")).toString(), Objects.requireNonNull(temp.get("city")).toString(), Objects.requireNonNull(temp.get("street")).toString(), Objects.requireNonNull(temp.get("name")).toString());
+                            downloadDevicesAndStoreLocally(Objects.requireNonNull(temp.get("name")).toString());
+                            // nameList.add(temp.get("name").toString());
+                        });
+                        Log.e(TAG_STORAGE, "DocumentSnapshot data: " + document.toString());
+                    } else {
+                        Log.e(TAG_STORAGE, "No such document");
+                    }
+                } else {
+                    Log.e(TAG_STORAGE, "get failed with ", task.getException());
+                }
+            }
+        });
+    }
+
+    private void downloadDevicesAndStoreLocally(String name) {
+        String userID = Objects.requireNonNull(fAuth.getCurrentUser()).getUid();
+
+        CollectionReference docRef = fStore.collection("users").document(userID).collection("locations").document(name).collection("devices");
+        docRef.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    QuerySnapshot document = task.getResult();
+                    if (!document.isEmpty()) {
+                        document.getDocuments().forEach((temp) -> {
+                            addDeviceInLocalDb(Objects.requireNonNull(temp.get("code")).toString(), Objects.requireNonNull(temp.get("location")).toString(), Objects.requireNonNull(temp.get("description")).toString(), Objects.requireNonNull(temp.get("name")).toString(), Objects.requireNonNull(temp.get("status")).toString(), Objects.requireNonNull(temp.get("type")).toString());
                         });
                         Log.e(TAG_STORAGE, "DocumentSnapshot data: " + document.toString());
                     } else {
@@ -138,12 +171,13 @@ public class WelcomeActivity extends MainActivity implements OnPressedListener {
     }
 
     void addLocationInLocalDb(String number, String city, String street, String name) {
-        Location location = new Location(name,city,street,number);
+        Location location = new Location(name, city, street, number);
         mLocationViewModel.insert(location);
     }
 
-    private void downloadDevicesAndStoreLocally() {
-        //todo do what the name tells you :))
+    private void addDeviceInLocalDb(String code, String location, String description, String name, String status, String type) {
+        Device device = new Device(name, location, description, type, status, code);
+        mDeviceViewModel.insert(device);
     }
 
     //methods
@@ -207,8 +241,6 @@ public class WelcomeActivity extends MainActivity implements OnPressedListener {
     public void onFacebookLogInButtonPressed() {
         //todo Facebook Log In
     }
-
-//from here
 
     private final FirebaseAuth.AuthStateListener fAuthListener = new FirebaseAuth.AuthStateListener() {
         @Override
