@@ -66,7 +66,7 @@ public class LocationFragmentTab extends Fragment {
         adapter.setOnItemClickListener(new ClickListener<Location>() {
             @Override
             public void onItemClick(Location data) {
-                listener.onLocationSelected(data.getName());
+                listener.onLocationSelected(data.getName(),data.getCity());
             }
         });
     }

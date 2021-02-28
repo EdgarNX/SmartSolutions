@@ -3,7 +3,7 @@ package com.neo.smartsolutions.home;
 public interface Listener {
     void onTabModeSelected(int mode);
 
-    void onLocationSelected(String locationName);
+    void onLocationSelected(String locationName, String city);
     void onBackPressedToLocationFragment();
     void onSubmitButtonPressedFromAddLocation(String name, String city, String street, int number);
 

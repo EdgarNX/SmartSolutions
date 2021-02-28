@@ -1,5 +1,6 @@
 package com.neo.smartsolutions.devices;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
@@ -7,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -24,6 +26,7 @@ import com.neo.smartsolutions.devices.device_local_db.Device;
 import com.neo.smartsolutions.devices.device_local_db.DeviceListAdapter;
 import com.neo.smartsolutions.devices.device_local_db.DeviceViewModel;
 import com.neo.smartsolutions.home.Listener;
+import com.neo.smartsolutions.utils.Weather;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,8 +51,17 @@ public class DeviceFragment extends Fragment {
         }
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
+        TextView degreesTextView = view.findViewById(R.id.degreesTextView);
+        TextView windTextView = view.findViewById(R.id.windTextView);
+        TextView descriptionTextView = view.findViewById(R.id.descriptionTextView);
+
+        degreesTextView.setText(Weather.getWeatherCelsius() + "°C");
+        windTextView.setText("Wind speed: " + "\n" + Weather.getWeatherWindSpeed() + "km/h");
+        descriptionTextView.setText("Weather: " + "\n" + Weather.getWeatherDescription());
+
         Button backToLocationsButton = view.findViewById(R.id.buttonBack);
         backToLocationsButton.setOnClickListener(backToLocationsOnClick);
 

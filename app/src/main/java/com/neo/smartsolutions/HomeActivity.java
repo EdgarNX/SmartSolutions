@@ -10,11 +10,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.location.Address;
-import android.location.Geocoder;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -23,7 +20,6 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.navigation.NavigationView;
@@ -39,13 +35,11 @@ import com.neo.smartsolutions.help.HelpFragment;
 import com.neo.smartsolutions.home.HomeFragment;
 import com.neo.smartsolutions.home.Listener;
 import com.neo.smartsolutions.locations.AddLocationFragment;
+import com.neo.smartsolutions.utils.Weather;
 import com.neo.smartsolutions.settings.SettingsFragment;
 import com.neo.smartsolutions.locations.location_local_db.*;
 
-import java.io.IOException;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
@@ -186,25 +180,40 @@ public class HomeActivity extends MainActivity implements NavigationView.OnNavig
     //weather
 
     public void getCurrentLocationWeather(String city) {
-        helper.getCurrentWeatherByCityName("Pancota", new CurrentWeatherCallback() {
+        helper.getCurrentWeatherByCityName(city, new CurrentWeatherCallback() {
             @Override
             public void onSuccess(CurrentWeather currentWeather) {
-                Log.e(TAG_WEATHER, "Coordinates: " + currentWeather.getCoord().getLat() + ", "+currentWeather.getCoord().getLon() +"\n"
-                        +"Weather Description: " + currentWeather.getWeather().get(0).getDescription() + "\n"
-                        +"Temperature: " + currentWeather.getMain().getTempMax()+"\n"
-                        +"Wind Speed: " + currentWeather.getWind().getSpeed() + "\n"
-                        +"City, Country: " + currentWeather.getName() + ", " + currentWeather.getSys().getCountry()
-                );
+                hideProgressDialog();
+
+                setTheCurrentLocationWeather(currentWeather.getWeather().get(0).getDescription(), (int) (currentWeather.getMain().getTempMax() - 272.15), (int) (currentWeather.getWind().getSpeed()));
+
+                beginTransactionToAnotherFragment(new DeviceFragment(), getTheCurrentLocation(), true);
+//               Log.e(TAG_WEATHER, "Coordinates: " + currentWeather.getCoord().getLat() + ", "+currentWeather.getCoord().getLon() +"\n"
+//                        +"Weather Description: " + description + "\n"
+//                        +"Temperature: " + celsiusTemperature +"\n"
+//                        +"Wind Speed: " + windSpeed + "\n"
+//                );
             }
 
             @Override
             public void onFailure(Throwable throwable) {
-                Log.e(TAG_WEATHER, throwable.getMessage());
+                hideProgressDialog();
+
+                setTheCurrentLocationWeather("error", 0, 0);
+
+                beginTransactionToAnotherFragment(new DeviceFragment(), getTheCurrentLocation(), true);
+                //Log.e(TAG_WEATHER, throwable.getMessage());
             }
         });
     }
 
     //navigation drawer
+
+    private void setTheCurrentLocationWeather(String description, int degrees, int windSpeed) {
+        Weather.setWeatherDescription(description);
+        Weather.setWeatherCelsius(degrees);
+        Weather.setWeatherWindSpeed(windSpeed);
+    }
 
     private void setActionBarTitle(String title) {
         toolbar_title.setText(title);
@@ -260,7 +269,7 @@ public class HomeActivity extends MainActivity implements NavigationView.OnNavig
     }
 
     private void addDeviceInLocalDb(String name, String description, String type, String status, String code) {
-        Device device = new Device(name,getTheCurrentLocation(), description, type, status, code);
+        Device device = new Device(name, getTheCurrentLocation(), description, type, status, code);
         mDeviceViewModel.insert(device);
     }
 
@@ -325,10 +334,12 @@ public class HomeActivity extends MainActivity implements NavigationView.OnNavig
     }
 
     @Override
-    public void onLocationSelected(String locationName) {
+    public void onLocationSelected(String locationName, String city) {
         //todo load here the hole array of devices
+        showProgressDialog();
+
+        getCurrentLocationWeather(city);
         saveTheCurrentLocation(locationName);
-        beginTransactionToAnotherFragment(new DeviceFragment(), locationName, true);
     }
 
     @Override
