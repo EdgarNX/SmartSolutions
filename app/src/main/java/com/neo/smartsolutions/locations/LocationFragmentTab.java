@@ -49,12 +49,8 @@ public class LocationFragmentTab extends Fragment {
         recyclerViewLocations.setAdapter(adapter);
         recyclerViewLocations.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        // Get a new or existing ViewModel from the ViewModelProvider.
         LocationViewModel mLocationViewModel = new ViewModelProvider(this).get(LocationViewModel.class);
 
-        // Add an observer on the LiveData returned by getAlphabetizedWords.
-        // The onChanged() method fires when the observed data changes and the activity is
-        // in the foreground.
         mLocationViewModel.getAllLocations().observe(getActivity(), new Observer<List<Location>>() {
             @Override
             public void onChanged(@Nullable final List<Location> locations) {

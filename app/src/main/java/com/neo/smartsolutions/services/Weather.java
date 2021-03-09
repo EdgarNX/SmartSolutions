@@ -1,4 +1,4 @@
-package com.neo.smartsolutions.utils;
+package com.neo.smartsolutions.services;
 
 public class Weather {
     public static String WEATHER_DESCRIPTION = "error";

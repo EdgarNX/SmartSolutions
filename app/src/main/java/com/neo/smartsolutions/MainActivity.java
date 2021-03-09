@@ -18,14 +18,12 @@ import com.neo.smartsolutions.locations.location_local_db.LocationViewModel;
 
 public abstract class MainActivity extends AppCompatActivity {
 
-    static final String TAG_AUTH = "AUTH";
-    static final String TAG_STORAGE = "STORE";
     static final String TAG_WEATHER = "WEATHER";
 
     LocationViewModel mLocationViewModel;
     DeviceViewModel mDeviceViewModel;
 
-    FirebaseAuth fAuth;
+    public FirebaseAuth fAuth;
     FirebaseFirestore fStore;
 
     public void getDatabasesInstantiated() {

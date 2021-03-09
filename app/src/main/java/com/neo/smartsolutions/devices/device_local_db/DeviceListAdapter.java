@@ -94,13 +94,15 @@ public class DeviceListAdapter extends RecyclerView.Adapter<DeviceListAdapter.De
         });
     }
 
+    public Device getDeviceAtPosition (int position) {
+        return mDevices.get(position);
+    }
+
     public void setDevices(List<Device> devices) {
         mDevices = devices;
         notifyDataSetChanged();
     }
 
-    // getItemCount() is called many times, and when it is first called,
-    // mWords has not been updated (means initially, it's null, and we can't return null).
     @Override
     public int getItemCount() {
         if (mDevices != null)
