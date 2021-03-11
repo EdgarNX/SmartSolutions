@@ -68,9 +68,6 @@ public class DeviceFragment extends Fragment {
         Button backToLocationsButton = view.findViewById(R.id.buttonBack);
         backToLocationsButton.setOnClickListener(backToLocationsOnClick);
 
-        Button deleteLocationButton = view.findViewById(R.id.deleteLocationButton);
-        deleteLocationButton.setOnClickListener(deleteLocationsOnClick);
-
         RecyclerView recyclerViewDevices = view.findViewById(R.id.recyclerViewDevices);
         final DeviceListAdapter adapter = new DeviceListAdapter(getActivity());
         recyclerViewDevices.setAdapter(adapter);
@@ -134,6 +131,7 @@ public class DeviceFragment extends Fragment {
                         builder.create()
                                 .show();
                     }
+
                 });
 
         helper.attachToRecyclerView(recyclerViewDevices);
@@ -142,6 +140,11 @@ public class DeviceFragment extends Fragment {
             @Override
             public void onItemClick(Device data) {
                 listener.onDeviceSelected(data.getName(), data.getType(), data.getStatus());
+            }
+
+            @Override
+            public void onItemLongClick(Device data) {
+                listener.onDeviceSelectedToEdit(data);
             }
         });
     }
@@ -152,13 +155,6 @@ public class DeviceFragment extends Fragment {
         @Override
         public void onClick(View view) {
             listener.onBackPressedToLocationFragment();
-        }
-    };
-
-    private final View.OnClickListener deleteLocationsOnClick = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            //listener.onDeleteLocationButtonPressed();
         }
     };
 }

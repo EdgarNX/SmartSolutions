@@ -25,6 +25,7 @@ import com.kwabenaberko.openweathermaplib.implementation.callback.CurrentWeather
 import com.kwabenaberko.openweathermaplib.model.currentweather.CurrentWeather;
 import com.neo.smartsolutions.devices.AddDeviceFragment;
 import com.neo.smartsolutions.devices.DeviceFragment;
+import com.neo.smartsolutions.devices.UpdateDevices;
 import com.neo.smartsolutions.devices.device_local_db.Device;
 import com.neo.smartsolutions.devices.device_types.IntensityFragment;
 import com.neo.smartsolutions.devices.device_types.RelayFragment;
@@ -42,6 +43,7 @@ import java.util.Objects;
 public class HomeActivity extends MainActivity implements NavigationView.OnNavigationItemSelectedListener, Listener {
 
     public static String CURRENT_LOCATION_FOR_DATABASE;
+    public static String CURRENT_DEVICE_FOR_DATABASE;
     public static String DEVICE_STATUS = "notSet";
     public static final int CONTROL_MODE_CODE = 0;
     public static final int SOLUTIONS_MODE_CODE = 1;
@@ -53,7 +55,7 @@ public class HomeActivity extends MainActivity implements NavigationView.OnNavig
     private CloudStorage cloudStorage;
 
     private String currentLocation;
-    private String currentDevice;
+    private Device currentDevice;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -197,8 +199,13 @@ public class HomeActivity extends MainActivity implements NavigationView.OnNavig
         return currentLocation;
     }
 
-    private void saveTheCurrentDevice(String deviceName) {
-        currentDevice = deviceName;
+    private void saveTheCurrentDevice(Device device) {
+        currentDevice = device;
+        CURRENT_DEVICE_FOR_DATABASE = device.getName();
+    }
+
+    private void saveTheCurrentDeviceName(String deviceName) {
+        CURRENT_DEVICE_FOR_DATABASE = deviceName;
     }
 
     //listeners
@@ -262,23 +269,28 @@ public class HomeActivity extends MainActivity implements NavigationView.OnNavig
 
     @Override
     public void onBackPressedToDeviceFragment() {
-        //todo reload here the new hole array of devices
         beginTransactionToAnotherFragment(new DeviceFragment(), getTheCurrentLocation(), true);
     }
 
     @Override
-    public void onSubmitButtonPressedFromAddDevice(String name, String description, String type, String status, String code) {
+    public void onSubmitButtonPressedFromAddDevice(String name, String description, String status, String type, String code) {
         cloudStorage.addDeviceInDatabase(name, getTheCurrentLocation() ,description, type, status, code);
-        localStorage.addDeviceInLocalDb(name, getTheCurrentLocation(), description, type, status, code);
+        localStorage.addDeviceInLocalDb(name, getTheCurrentLocation(), description, status, type, code);
+
+        onBackPressedToDeviceFragment();
+    }
+
+    @Override
+    public void onSubmitButtonPressedFromUpdateDevice(String name) {
+        cloudStorage.updateDevice(currentDevice, name);
+        localStorage.updateDeviceName(currentDevice, name);
 
         onBackPressedToDeviceFragment();
     }
 
     @Override
     public void onDeviceSelected(String deviceName, String deviceType, String status) {
-        //todo here you can edit the devices
-
-        saveTheCurrentDevice(deviceName);
+        saveTheCurrentDeviceName(deviceName);
         DEVICE_STATUS = status;
 
         if ("Relay".equals(deviceType)) {
@@ -286,8 +298,13 @@ public class HomeActivity extends MainActivity implements NavigationView.OnNavig
         } else {
             //if it is intensity type
             beginTransactionToAnotherFragment(new IntensityFragment(), deviceName, false);
-
         }
+    }
+
+    @Override
+    public void onDeviceSelectedToEdit(Device device) {
+        saveTheCurrentDevice(device);
+        beginTransactionToAnotherFragment(new UpdateDevices(), CURRENT_DEVICE_FOR_DATABASE, false);
     }
 
     @Override
@@ -305,6 +322,7 @@ public class HomeActivity extends MainActivity implements NavigationView.OnNavig
 
     @Override
     public void onDeleteDeviceButtonPressed(Device device) {
+        //the local is already deleted here
         cloudStorage.deleteDevice(device);
     }
 

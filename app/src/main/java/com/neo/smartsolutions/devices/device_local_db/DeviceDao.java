@@ -21,9 +21,6 @@ public interface DeviceDao {
     @Delete
     void delete(Device device);
 
-    @Query("DELETE FROM device_table WHERE name = :name")
-    void deleteById(String name);
-
     @Query("DELETE FROM device_table")
     void deleteAll();
 

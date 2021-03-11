@@ -12,7 +12,6 @@ class DeviceRepository {
     private DeviceDao mDeviceDao;
     private LiveData<List<Device>> mAllDevices;
 
-
     DeviceRepository(Application application) {
         DeviceRoomDatabase db = DeviceRoomDatabase.getDatabase(application);
         mDeviceDao = db.deviceDao();

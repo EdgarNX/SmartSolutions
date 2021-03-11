@@ -1,6 +1,8 @@
 package com.neo.smartsolutions.services.storage;
 
 
+import androidx.annotation.NonNull;
+
 import com.neo.smartsolutions.devices.device_local_db.Device;
 import com.neo.smartsolutions.devices.device_local_db.DeviceViewModel;
 import com.neo.smartsolutions.locations.location_local_db.Location;
@@ -28,9 +30,13 @@ public class LocalStorage {
         locationViewModel.insert(location);
     }
 
-    public void addDeviceInLocalDb(String name, String location, String description, String type, String status, String code) {
-        Device device = new Device(name, location, description, type, status, code);
+    public void addDeviceInLocalDb(String name, String location, String description, String status, String type, String code) {
+        Device device = new Device(name, location, description, status, type, code);
         deviceViewModel.insert(device);
     }
 
+    public void updateDeviceName(Device device, String name) {
+        addDeviceInLocalDb(name, device.getLocation(), device.getDescription(), device.getStatus(), device.getType(), device.getCode());
+        deviceViewModel.deleteDevice(device);
+    }
 }

@@ -231,5 +231,25 @@ public class CloudStorage {
                 });
 
     }
+
+    public void updateDevice(Device device, String name) {
+        deleteDevice(device);
+        addDeviceInDatabase(name, device.getLocation(), device.getDescription(), device.getType(), device.getStatus(), device.getCode());
+    }
+
+//    public void updateState(Device device, String name) {
+//        String userID = Objects.requireNonNull(auth.getCurrentUser()).getUid();
+//
+//        DocumentReference docRefDeviceName = store.collection("users")
+//                .document(userID)
+//                .collection("locations")
+//                .document(device.getLocation())
+//                .collection("devices")
+//                .document(device.getName());
+//
+//        docRefDeviceName.update("name", name);
+//
+//
+//    }
 }
 

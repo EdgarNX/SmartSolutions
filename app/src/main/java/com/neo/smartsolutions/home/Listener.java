@@ -11,8 +11,11 @@ public interface Listener {
     void onSubmitButtonPressedFromAddLocation(String name, String city, String street, int number);
 
     void onDeviceSelected(String deviceName, String deviceType, String Status);
+    void onDeviceSelectedToEdit(Device device);
     void onBackPressedToDeviceFragment();
     void onSubmitButtonPressedFromAddDevice(String name, String description, String type, String status, String code);
+    void onSubmitButtonPressedFromUpdateDevice(String name);
+
 
     void  onOnOffButtonPressedInRelayFragment(String status);
     void onIntensitySubmitButtonPressed(String status);

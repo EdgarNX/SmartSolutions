@@ -92,6 +92,15 @@ public class DeviceListAdapter extends RecyclerView.Adapter<DeviceListAdapter.De
                 clickListener.onItemClick(currentDevice);
             }
         });
+
+        holder.getCardView().setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                //todo implement here the long click to edit
+                clickListener.onItemLongClick(currentDevice);
+                return false;
+            }
+        });
     }
 
     public Device getDeviceAtPosition (int position) {
@@ -113,4 +122,5 @@ public class DeviceListAdapter extends RecyclerView.Adapter<DeviceListAdapter.De
     public void setOnItemClickListener(ClickListener<Device> deviceClickListener) {
         this.clickListener = deviceClickListener;
     }
+
 }
