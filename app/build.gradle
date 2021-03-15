@@ -4,7 +4,7 @@ apply plugin: 'com.google.gms.google-services'
 
 android {
     compileSdkVersion 30
-    buildToolsVersion "30.0.2"
+    buildToolsVersion "30.0.3"
 
     defaultConfig {
         applicationId "com.neo.smartsolutions"
@@ -43,7 +43,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-storage:19.2.1'
     implementation 'com.google.firebase:firebase-firestore:22.1.0'
     implementation 'androidx.room:room-runtime:2.2.6'
-    testImplementation 'junit:junit:4.13.1'
+    testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
@@ -64,5 +64,6 @@ dependencies {
     implementation 'com.google.android.libraries.places:places:2.4.0'
     implementation 'com.github.KwabenBerko:OpenWeatherMap-Android-Library:2.1.0'
 
-
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
 }

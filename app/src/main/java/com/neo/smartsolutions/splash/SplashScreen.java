@@ -1,4 +1,4 @@
-package com.neo.smartsolutions;
+package com.neo.smartsolutions.splash;
 
 import android.content.Intent;
 
@@ -8,6 +8,9 @@ import androidx.annotation.NonNull;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.neo.smartsolutions.HomeActivity;
+import com.neo.smartsolutions.MainActivity;
+import com.neo.smartsolutions.WelcomeActivity;
 
 public class SplashScreen extends MainActivity {
 

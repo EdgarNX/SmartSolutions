@@ -1,4 +1,4 @@
-package com.neo.smartsolutions.locations.location_local_db;
+package com.neo.smartsolutions.devices.device_local_db;
 
 import android.content.Context;
 
@@ -11,21 +11,21 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@Database(entities = {Location.class}, version = 1, exportSchema = false)
-public abstract class LocationRoomDatabase extends RoomDatabase {
+@Database(entities = {Device.class}, version = 1, exportSchema = false)
+public abstract class DeviceRoomDatabase extends RoomDatabase {
 
-    public abstract LocationDao locationDao();
+    public abstract DeviceDao deviceDao();
 
-    private static volatile LocationRoomDatabase INSTANCE;
+    private static volatile DeviceRoomDatabase INSTANCE;
     private static final int NUMBER_OF_THREADS = 4;
     static final ExecutorService databaseWriteExecutor = Executors.newFixedThreadPool(NUMBER_OF_THREADS);
 
-    static LocationRoomDatabase getDatabase(final Context context) {
+    static DeviceRoomDatabase getDatabase(final Context context) {
         if (INSTANCE == null) {
-            synchronized (LocationRoomDatabase.class) {
+            synchronized (DeviceRoomDatabase.class) {
                 if (INSTANCE == null) {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
-                            LocationRoomDatabase.class, "location_database")
+                            DeviceRoomDatabase.class, "device_database")
                             .build();
                 }
             }
@@ -39,7 +39,7 @@ public abstract class LocationRoomDatabase extends RoomDatabase {
             super.onOpen(db);
 
             databaseWriteExecutor.execute(() -> {
-                LocationDao dao = INSTANCE.locationDao();
+                DeviceDao dao = INSTANCE.deviceDao();
                 dao.deleteAll();
             });
         }
