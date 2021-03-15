@@ -20,7 +20,7 @@
             android:scaleType="centerCrop"
             cardView:layout_constraintStart_toStartOf="parent"
             cardView:layout_constraintTop_toTopOf="parent"
-            tools:background="@drawable/smart_logo"
+            tools:background="@drawable/ic_smart_logo"
             tools:ignore="ContentDescription" />
 
         <TextView
