@@ -5,7 +5,10 @@ import android.app.Application;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
+import com.neo.smartsolutions.locations.location_local_db.Location;
+
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public class DeviceViewModel extends AndroidViewModel {
 
@@ -27,4 +30,5 @@ public class DeviceViewModel extends AndroidViewModel {
 
     public void deleteDevice(Device device) {mRepository.deleteDevice(device);}
 
+    public List<Device> getAllWithLocationName(String locationName) { return mRepository.getDeviceByLocationName(locationName); }
 }

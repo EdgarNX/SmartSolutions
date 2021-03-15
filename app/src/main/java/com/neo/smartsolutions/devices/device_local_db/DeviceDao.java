@@ -5,7 +5,11 @@ import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
+import androidx.room.RawQuery;
 import androidx.room.Update;
+import androidx.sqlite.db.SupportSQLiteQuery;
+
+import com.neo.smartsolutions.locations.location_local_db.Location;
 
 import java.util.List;
 
@@ -17,6 +21,12 @@ public interface DeviceDao {
 
     @Insert
     void insert(Device device);
+
+//    @RawQuery(observedEntities = Device.class)
+//    List<Device> getDevices(SupportSQLiteQuery query);
+
+    @Query("SELECT * FROM device_table WHERE location = :locationName")
+    List<Device> getDevices(String locationName);
 
     @Delete
     void delete(Device device);

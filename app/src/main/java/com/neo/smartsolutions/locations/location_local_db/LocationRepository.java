@@ -46,4 +46,22 @@ class LocationRepository {
     public void deleteAll()  {
          new deleteAllLocationsAsyncTask(mLocationDao).execute();
     }
+
+    private static class deleteLocationAsyncTask extends AsyncTask<Location, Void, Void> {
+        private LocationDao mAsyncTaskDao;
+
+        deleteLocationAsyncTask(LocationDao dao) {
+            mAsyncTaskDao = dao;
+        }
+
+        @Override
+        protected Void doInBackground(final Location... params) {
+            mAsyncTaskDao.delete(params[0]);
+            return null;
+        }
+    }
+
+    public void deleteLocation(Location location)  {
+        new LocationRepository.deleteLocationAsyncTask(mLocationDao).execute(location);
+    }
 }

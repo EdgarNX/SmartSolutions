@@ -1,17 +1,28 @@
 package com.neo.smartsolutions.services.storage;
 
 
-import androidx.annotation.NonNull;
+import android.util.Log;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.sqlite.db.SimpleSQLiteQuery;
+
+import com.neo.smartsolutions.HomeActivity;
 import com.neo.smartsolutions.devices.device_local_db.Device;
+import com.neo.smartsolutions.devices.device_local_db.DeviceDao;
 import com.neo.smartsolutions.devices.device_local_db.DeviceViewModel;
 import com.neo.smartsolutions.locations.location_local_db.Location;
+import com.neo.smartsolutions.locations.location_local_db.LocationDao;
 import com.neo.smartsolutions.locations.location_local_db.LocationViewModel;
+
+import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Executors;
 
 public class LocalStorage {
 
-    LocationViewModel locationViewModel;
-    DeviceViewModel deviceViewModel;
+    public LocationViewModel locationViewModel;
+    public DeviceViewModel deviceViewModel;
 
     public LocalStorage(LocationViewModel mLocationViewModel, DeviceViewModel mDeviceViewModel) {
         this.locationViewModel = mLocationViewModel;
@@ -21,6 +32,7 @@ public class LocalStorage {
     public void deleteAllLocation() {
         locationViewModel.deleteAll();
     }
+
     public void deleteAllDevices() {
         deviceViewModel.deleteAll();
     }
@@ -39,4 +51,13 @@ public class LocalStorage {
         addDeviceInLocalDb(name, device.getLocation(), device.getDescription(), device.getStatus(), device.getType(), device.getCode());
         deviceViewModel.deleteDevice(device);
     }
+
+    public void deleteLocationAndDevices(Location location) {
+        List<Device> devices = deviceViewModel.getAllWithLocationName(location.getName());
+        for (Device device : devices) {
+            deviceViewModel.deleteDevice(device);
+        }
+        locationViewModel.deleteLocation(location);
+    }
+
 }

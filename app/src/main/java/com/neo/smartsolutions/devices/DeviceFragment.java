@@ -33,6 +33,7 @@ import com.neo.smartsolutions.services.Weather;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class DeviceFragment extends Fragment {
 
@@ -75,7 +76,7 @@ public class DeviceFragment extends Fragment {
 
         DeviceViewModel mDeviceViewModel = new ViewModelProvider(this).get(DeviceViewModel.class);
 
-        mDeviceViewModel.getAllDevices().observe(getActivity(), new Observer<List<Device>>() {
+        mDeviceViewModel.getAllDevices().observe(requireActivity(), new Observer<List<Device>>() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onChanged(@Nullable final List<Device> devices) {
@@ -112,12 +113,8 @@ public class DeviceFragment extends Fragment {
                             public void onClick(DialogInterface dialog, int arg1) {
                                 int position = viewHolder.getAdapterPosition();
                                 Device myDevice = adapter.getDeviceAtPosition(position);
-                               // Toast.makeText(getActivity(), getString(R.string.delete_word_preamble) + " " + myDevice.getName(), Toast.LENGTH_LONG).show();
-
-                                mDeviceViewModel.deleteDevice(myDevice);
-
+                                // Toast.makeText(getActivity(), getString(R.string.delete_word_preamble) + " " + myDevice.getName(), Toast.LENGTH_LONG).show();
                                 listener.onDeleteDeviceButtonPressed(myDevice);
-
                                 dialog.cancel();
                             }
                         });

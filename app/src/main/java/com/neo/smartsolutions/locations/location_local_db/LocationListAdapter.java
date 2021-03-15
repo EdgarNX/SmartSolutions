@@ -14,6 +14,7 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.neo.smartsolutions.R;
+import com.neo.smartsolutions.devices.device_local_db.Device;
 
 import java.util.List;
 
@@ -80,6 +81,10 @@ public class LocationListAdapter extends RecyclerView.Adapter<LocationListAdapte
                 clickListener.onItemClick(currentLocation);
             }
         });
+    }
+
+    public Location getLocationAtPosition (int position) {
+        return mLocations.get(position);
     }
 
     public void setLocations(List<Location> locations) {

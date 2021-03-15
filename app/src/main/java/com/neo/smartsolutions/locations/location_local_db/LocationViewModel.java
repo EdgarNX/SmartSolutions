@@ -5,6 +5,8 @@ import android.app.Application;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
+import com.neo.smartsolutions.devices.device_local_db.Device;
+
 import java.util.List;
 
 public class LocationViewModel extends AndroidViewModel {
@@ -24,5 +26,7 @@ public class LocationViewModel extends AndroidViewModel {
     public void insert(Location location) { mRepository.insert(location); }
 
     public void deleteAll() {mRepository.deleteAll();}
+
+    public void deleteLocation(Location location) {mRepository.deleteLocation(location);}
 
 }

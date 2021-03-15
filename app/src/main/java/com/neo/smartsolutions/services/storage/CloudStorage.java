@@ -22,8 +22,10 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.neo.smartsolutions.R;
 import com.neo.smartsolutions.WelcomeActivity;
 import com.neo.smartsolutions.devices.device_local_db.Device;
+import com.neo.smartsolutions.locations.location_local_db.Location;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -229,7 +231,6 @@ public class CloudStorage {
                         Log.e(TAG_STORAGE, "get failed with ", e);
                     }
                 });
-
     }
 
     public void updateDevice(Device device, String name) {
@@ -237,19 +238,33 @@ public class CloudStorage {
         addDeviceInDatabase(name, device.getLocation(), device.getDescription(), device.getType(), device.getStatus(), device.getCode());
     }
 
-//    public void updateState(Device device, String name) {
-//        String userID = Objects.requireNonNull(auth.getCurrentUser()).getUid();
-//
-//        DocumentReference docRefDeviceName = store.collection("users")
-//                .document(userID)
-//                .collection("locations")
-//                .document(device.getLocation())
-//                .collection("devices")
-//                .document(device.getName());
-//
-//        docRefDeviceName.update("name", name);
-//
-//
-//    }
+    public void deleteLocationAndDevices(Location myLocation) {
+        String userID = Objects.requireNonNull(auth.getCurrentUser()).getUid();
+
+        List<Device> devices = localStorage.deviceViewModel.getAllWithLocationName(myLocation.getName());
+        for (Device device : devices) {
+            deleteDevice(device);
+        }
+
+        DocumentReference docRef = store.collection("users")
+                .document(userID)
+                .collection("locations")
+                .document(myLocation.getName());
+
+        docRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+
+                Log.d(TAG_STORAGE, "Deleted");
+            }
+        })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.e(TAG_STORAGE, "get failed with ", e);
+                    }
+                });
+    }
+
 }
 

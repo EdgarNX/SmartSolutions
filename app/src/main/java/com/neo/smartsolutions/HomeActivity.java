@@ -2,7 +2,6 @@ package com.neo.smartsolutions;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -10,7 +9,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -33,6 +31,7 @@ import com.neo.smartsolutions.help.HelpFragment;
 import com.neo.smartsolutions.home.HomeFragment;
 import com.neo.smartsolutions.home.Listener;
 import com.neo.smartsolutions.locations.AddLocationFragment;
+import com.neo.smartsolutions.locations.location_local_db.Location;
 import com.neo.smartsolutions.services.storage.CloudStorage;
 import com.neo.smartsolutions.services.storage.LocalStorage;
 import com.neo.smartsolutions.services.Weather;
@@ -81,7 +80,7 @@ public class HomeActivity extends MainActivity implements NavigationView.OnNavig
         navigationView.setCheckedItem(R.id.nav_home);
 
         View headerView = navigationView.getHeaderView(0);
-        TextView textUserEmail = (TextView) headerView.findViewById(R.id.textUserEmail);
+        TextView textUserEmail = headerView.findViewById(R.id.textUserEmail);
         String currentUserEmail = Objects.requireNonNull(fAuth.getCurrentUser()).getEmail();
         textUserEmail.setText(currentUserEmail);
 
@@ -227,25 +226,9 @@ public class HomeActivity extends MainActivity implements NavigationView.OnNavig
     }
 
     @Override
-    public void onDeleteLocationButtonPressed() {
-        AlertDialog.Builder alert = new AlertDialog.Builder(this);
-        alert.setMessage(R.string.location_delete_question);
-        alert.setCancelable(false);
-        alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                // todo delete all deveice form this location localy and from cloud
-                // todo delete the location localy and from cloud
-                onBackPressedToLocationFragment();
-            }
-        });
-        alert.setNegativeButton("No", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.dismiss();
-            }
-        });
-        alert.show();
+    public void onDeleteLocationButtonPressed(Location myLocation) {
+        cloudStorage.deleteLocationAndDevices(myLocation);
+        localStorage.deleteLocationAndDevices(myLocation);
     }
 
     @Override
@@ -322,7 +305,7 @@ public class HomeActivity extends MainActivity implements NavigationView.OnNavig
 
     @Override
     public void onDeleteDeviceButtonPressed(Device device) {
-        //the local is already deleted here
+        mDeviceViewModel.deleteDevice(device);
         cloudStorage.deleteDevice(device);
     }
 
