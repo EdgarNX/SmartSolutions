@@ -105,7 +105,6 @@ public class DeviceFragment extends Fragment {
 
                     @Override
                     public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-
                         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
                         builder.setMessage(getString(R.string.device_delete_question));
                         builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {

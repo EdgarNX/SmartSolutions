@@ -1,6 +1,8 @@
 package com.neo.smartsolutions.locations;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.neo.smartsolutions.R;
+import com.neo.smartsolutions.devices.device_local_db.Device;
 import com.neo.smartsolutions.home.Listener;
 
 public class AddLocationFragment extends Fragment {
@@ -78,7 +81,25 @@ public class AddLocationFragment extends Fragment {
             if (!city.isEmpty() && city.length() > 0) {
                 if (!street.isEmpty() && street.length() > 0) {
                     if (number != -1) {
-                        listener.onSubmitButtonPressedFromAddLocation(name, city, street, number);
+
+                        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                        builder.setMessage(getString(R.string.add_location_double_check));
+                        builder.setPositiveButton("It is checked", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int arg1) {
+                                listener.onSubmitButtonPressedFromAddLocation(name, city, street, number);
+                                dialog.cancel();
+                            }
+                        });
+                        builder.setNegativeButton("Let me check", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int arg1) {
+                                dialog.cancel();
+                            }
+                        });
+                        builder.create()
+                                .show();
+
                     } else {
                         inputNumber.setError("Please complete the number field.");
                     }
