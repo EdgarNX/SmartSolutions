@@ -241,7 +241,6 @@ public class HomeActivity extends MainActivity implements NavigationView.OnNavig
 
     @Override
     public void onLocationSelected(String locationName, String city) {
-        //todo load here the hole array of devices
         showProgressDialog();
 
         getCurrentLocationWeather(city);
@@ -256,8 +255,16 @@ public class HomeActivity extends MainActivity implements NavigationView.OnNavig
     }
 
     @Override
+    public void onBackPressedToDeviceFragmentFromDevices() {
+        beginTransactionToAnotherFragment(new DeviceFragment(), getTheCurrentLocation(), true);
+        Device deviceWithNewState = new Device(currentDevice.getName(), currentDevice.getLocation(), currentDevice.getDescription(), DEVICE_STATUS, currentDevice.getType(), currentDevice.getCode());
+
+        localStorage.updateDevice(deviceWithNewState);
+    }
+
+    @Override
     public void onSubmitButtonPressedFromAddDevice(String name, String description, String status, String type, String code) {
-        cloudStorage.addDeviceInDatabase(name, getTheCurrentLocation() ,description, type, status, code);
+        cloudStorage.addDeviceInDatabase(name, getTheCurrentLocation(), description, type, status, code);
         localStorage.addDeviceInLocalDb(name, getTheCurrentLocation(), description, status, type, code);
 
         onBackPressedToDeviceFragment();
@@ -272,15 +279,16 @@ public class HomeActivity extends MainActivity implements NavigationView.OnNavig
     }
 
     @Override
-    public void onDeviceSelected(String deviceName, String deviceType, String status) {
-        saveTheCurrentDeviceName(deviceName);
-        DEVICE_STATUS = status;
+    public void onDeviceSelected(Device device) {
+        saveTheCurrentDevice(device);
+        saveTheCurrentDeviceName(device.getName());
+        DEVICE_STATUS = device.getStatus();
 
-        if ("Relay".equals(deviceType)) {
-            beginTransactionToAnotherFragment(new RelayFragment(), deviceName, false);
+        if ("Relay".equals(device.getType())) {
+            beginTransactionToAnotherFragment(new RelayFragment(), device.getName(), false);
         } else {
             //if it is intensity type
-            beginTransactionToAnotherFragment(new IntensityFragment(), deviceName, false);
+            beginTransactionToAnotherFragment(new IntensityFragment(), device.getName(), false);
         }
     }
 
@@ -292,7 +300,11 @@ public class HomeActivity extends MainActivity implements NavigationView.OnNavig
 
     @Override
     public void onOnOffButtonPressedInRelayFragment(String status) {
-        //todo change here the status what we obtain in the layout to be visible also in firebase
+        int value = 0;
+        if ("on".equals(status)) {
+            value = 1;
+        }
+        cloudStorage.changeDeviceValue(currentDevice, value);
         DEVICE_STATUS = status;
     }
 

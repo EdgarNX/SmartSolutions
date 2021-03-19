@@ -60,4 +60,8 @@ public class LocalStorage {
         locationViewModel.deleteLocation(location);
     }
 
+    public void updateDevice(Device device) {
+        deviceViewModel.update(device);
+    }
+
 }

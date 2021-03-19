@@ -15,6 +15,8 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -37,12 +39,14 @@ public class CloudStorage {
     FirebaseAuth auth;
     Context context;
     LocalStorage localStorage;
+    DatabaseReference databaseReference;
 
     public CloudStorage(LocalStorage localStorage, FirebaseAuth auth, FirebaseFirestore store, Context context) {
         this.localStorage = localStorage;
         this.auth = auth;
         this.store = store;
         this.context = context;
+        this.databaseReference = FirebaseDatabase.getInstance().getReference();
     }
 
     public void logOut() {
@@ -121,6 +125,7 @@ public class CloudStorage {
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
+                        databaseReference.child(Objects.requireNonNull(code)).setValue(status);
                         Log.e(TAG_STORAGE, "Added");
                     }
                 })
@@ -217,11 +222,10 @@ public class CloudStorage {
                 .collection("devices")
                 .document(device.getName());
 
-
         docRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
-
+                databaseReference.child(Objects.requireNonNull(device.getCode())).removeValue();
                 Log.d(TAG_STORAGE, "Deleted");
             }
         })
@@ -266,5 +270,8 @@ public class CloudStorage {
                 });
     }
 
+    public void changeDeviceValue(Device device, int value) {
+        databaseReference.child(Objects.requireNonNull(device.getCode())).setValue(value);
+    }
 }
 

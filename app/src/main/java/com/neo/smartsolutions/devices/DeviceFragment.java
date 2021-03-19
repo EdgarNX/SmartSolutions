@@ -135,7 +135,8 @@ public class DeviceFragment extends Fragment {
         adapter.setOnItemClickListener(new ClickListener<Device>() {
             @Override
             public void onItemClick(Device data) {
-                listener.onDeviceSelected(data.getName(), data.getType(), data.getStatus());
+                listener.onDeviceSelected(data);
+                //listener.onDeviceSelected(data.getName(), data.getType(), data.getStatus());
             }
 
             @Override

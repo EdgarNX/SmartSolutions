@@ -65,41 +65,6 @@ class DeviceRepository {
         new deleteDeviceAsyncTask(mDeviceDao).execute(device);
     }
 
-
-
-
-
-
-
-//    List<Device> getAllWithLocationName(String locationName) {
-//
-//        List<Device> devicesFromLocation = mDeviceDao.getDevices(new
-//                SimpleSQLiteQuery("SELECT * FROM Device WHERE name = " + locationName));
-//
-//        return devicesFromLocation;
-//    }
-
-
-
-//    private static class getDeviceByLocationNameAsyncTask extends AsyncTask<SupportSQLiteQuery, Void, Void> {
-//        private DeviceDao mAsyncTaskDao;
-//
-//        getDeviceByLocationNameAsyncTask(DeviceDao dao) {
-//            mAsyncTaskDao = dao;
-//        }
-//
-//        @Override
-//        protected Void doInBackground(final SupportSQLiteQuery... params) {
-//            mAsyncTaskDao.getDevices(params[0]);
-//            return null;
-//        }
-//    }
-//
-//    public void getDeviceByLocationName(SupportSQLiteQuery device) {
-//        new getDeviceByLocationNameAsyncTask(mDeviceDao).execute(device);
-//    }
-
-
     public List<Device> getDeviceByLocationName(String locationName){
         try {
             return new getDeviceByLocationNameAsyncTask(mDeviceDao).execute(locationName).get();
@@ -121,6 +86,12 @@ class DeviceRepository {
         protected List<Device> doInBackground(String... params) {
             return mAsyncTaskDao.getDevices(params[0]);
         }
+    }
+
+    void update(Device device) {
+        DeviceRoomDatabase.databaseWriteExecutor.execute(() -> {
+            mDeviceDao.update(device);
+        });
     }
 
 }

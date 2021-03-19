@@ -64,7 +64,7 @@ public class RelayFragment extends Fragment {
     private final View.OnClickListener backOnClick = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            listener.onBackPressedToDeviceFragment();
+            listener.onBackPressedToDeviceFragmentFromDevices();
         }
     };
 

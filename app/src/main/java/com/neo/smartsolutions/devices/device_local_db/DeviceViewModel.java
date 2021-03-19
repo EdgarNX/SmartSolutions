@@ -26,6 +26,8 @@ public class DeviceViewModel extends AndroidViewModel {
 
     public void insert(Device device) { mRepository.insert(device); }
 
+    public void update(Device device) { mRepository.update(device); }
+
     public void deleteAll() {mRepository.deleteAll();}
 
     public void deleteDevice(Device device) {mRepository.deleteDevice(device);}
