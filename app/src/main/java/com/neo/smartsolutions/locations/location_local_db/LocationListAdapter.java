@@ -74,7 +74,7 @@ public class LocationListAdapter extends RecyclerView.Adapter<LocationListAdapte
         Location currentLocation = mLocations.get(position);
         holder.getTextViewTitle().setText(currentLocation.getName());
         holder.getTextViewLocation().setText(currentLocation.getLocation());
-        holder.getImageViewImage().setBackground(ContextCompat.getDrawable(mInflater.getContext(), R.drawable.ic_smart_logo));
+        holder.getImageViewImage().setBackground(ContextCompat.getDrawable(mInflater.getContext(), R.drawable.ic_map));
         holder.getCardView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

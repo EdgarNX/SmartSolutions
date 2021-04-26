@@ -5,6 +5,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.LiveData;
 import androidx.sqlite.db.SimpleSQLiteQuery;
 
 import com.neo.smartsolutions.HomeActivity;
@@ -16,6 +17,7 @@ import com.neo.smartsolutions.locations.location_local_db.LocationDao;
 import com.neo.smartsolutions.locations.location_local_db.LocationViewModel;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
 
@@ -63,5 +65,13 @@ public class LocalStorage {
     public void updateDevice(Device device) {
         deviceViewModel.update(device);
     }
+
+    public boolean getDeviceIfExists(String deviceName) {
+        boolean result = false;
+        Device device = deviceViewModel.getWithDeviceName(deviceName).getValue();
+        result = device != null;
+        return result;
+    }
+
 
 }

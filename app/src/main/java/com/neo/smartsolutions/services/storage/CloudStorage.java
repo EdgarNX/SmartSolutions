@@ -126,6 +126,11 @@ public class CloudStorage {
                     @Override
                     public void onSuccess(Void aVoid) {
                         databaseReference.child(Objects.requireNonNull(code)).setValue(status);
+                        if ("Color".equals(type)) {
+                            databaseReference.child(Objects.requireNonNull(code)).child("Red").setValue(255);
+                            databaseReference.child(Objects.requireNonNull(code)).child("Green").setValue(255);
+                            databaseReference.child(Objects.requireNonNull(code)).child("Blue").setValue(255);
+                        }
                         Log.e(TAG_STORAGE, "Added");
                     }
                 })
@@ -272,6 +277,12 @@ public class CloudStorage {
 
     public void changeDeviceValue(Device device, int value) {
         databaseReference.child(Objects.requireNonNull(device.getCode())).setValue(value);
+    }
+
+    public void changeRGBDeviceValue(Device device, int red, int green, int blue) {
+        databaseReference.child(Objects.requireNonNull(device.getCode())).child("Blue").setValue(blue);
+        databaseReference.child(Objects.requireNonNull(device.getCode())).child("Green").setValue(green);
+        databaseReference.child(Objects.requireNonNull(device.getCode())).child("Red").setValue(red);
     }
 }
 

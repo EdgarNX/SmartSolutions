@@ -1,6 +1,8 @@
 package com.neo.smartsolutions.devices.device_local_db;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,8 +16,11 @@ import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.github.dhaval2404.colorpicker.util.ColorUtil;
 import com.neo.smartsolutions.HomeActivity;
 import com.neo.smartsolutions.R;
+import com.neo.smartsolutions.devices.device_types.IntensityFragment;
+import com.neo.smartsolutions.devices.device_types.RelayFragment;
 
 import java.util.List;
 
@@ -80,11 +85,20 @@ public class DeviceListAdapter extends RecyclerView.Adapter<DeviceListAdapter.De
             } else {
                 holder.getImageViewImage().setBackground(ContextCompat.getDrawable(mInflater.getContext(), R.drawable.ic_power_of));
             }
-        } else {
-            //intensity
+        }  else if ("Locker".equals(currentDevice.getType())){
+            if ("open".equals(currentDevice.getStatus())) {
+                holder.getImageViewImage().setBackground(ContextCompat.getDrawable(mInflater.getContext(), R.drawable.ic_opened_padlock));
+            } else {
+                holder.getImageViewImage().setBackground(ContextCompat.getDrawable(mInflater.getContext(), R.drawable.ic_closed_padlock));
+            }
+        } else if ("Progress".equals(currentDevice.getType())){
             holder.getImageViewImage().setVisibility(View.GONE);
             holder.getTextViewInformation().setText(currentDevice.getStatus() + "%");
+        } else {
+            holder.getImageViewImage().setVisibility(View.GONE);
+            holder.getTextViewInformation().setBackgroundColor(Color.parseColor(currentDevice.getStatus()));
         }
+
 
         holder.getCardView().setOnClickListener(new View.OnClickListener() {
             @Override

@@ -23,6 +23,10 @@ class DeviceRepository {
         return mAllDevices;
     }
 
+    LiveData<Device> getDevice(String deviceName) {
+        return mDeviceDao.getDevice(deviceName);
+    }
+
     void insert(Device device) {
         DeviceRoomDatabase.databaseWriteExecutor.execute(() -> {
             mDeviceDao.insert(device);

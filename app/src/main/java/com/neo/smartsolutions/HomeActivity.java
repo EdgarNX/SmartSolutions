@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -25,7 +26,9 @@ import com.neo.smartsolutions.devices.AddDeviceFragment;
 import com.neo.smartsolutions.devices.DeviceFragment;
 import com.neo.smartsolutions.devices.UpdateDevices;
 import com.neo.smartsolutions.devices.device_local_db.Device;
+import com.neo.smartsolutions.devices.device_types.ColorFragment;
 import com.neo.smartsolutions.devices.device_types.IntensityFragment;
+import com.neo.smartsolutions.devices.device_types.LockerFragment;
 import com.neo.smartsolutions.devices.device_types.RelayFragment;
 import com.neo.smartsolutions.help.HelpFragment;
 import com.neo.smartsolutions.home.HomeFragment;
@@ -233,10 +236,15 @@ public class HomeActivity extends MainActivity implements NavigationView.OnNavig
 
     @Override
     public void onSubmitButtonPressedFromAddLocation(String name, String city, String street, int number) {
+        // if(localStorage.getDeviceIfExists(name)){
         cloudStorage.addLocationInDatabase(name, city, street, number);
         localStorage.addLocationInLocalDb(name, city, street, Integer.toString(number));
 
         onBackPressedToLocationFragment();
+        //  } else {
+
+        //  }
+
     }
 
     @Override
@@ -258,16 +266,21 @@ public class HomeActivity extends MainActivity implements NavigationView.OnNavig
     public void onBackPressedToDeviceFragmentFromDevices() {
         beginTransactionToAnotherFragment(new DeviceFragment(), getTheCurrentLocation(), true);
         Device deviceWithNewState = new Device(currentDevice.getName(), currentDevice.getLocation(), currentDevice.getDescription(), DEVICE_STATUS, currentDevice.getType(), currentDevice.getCode());
+        deviceWithNewState.setId(currentDevice.getId());
 
         localStorage.updateDevice(deviceWithNewState);
     }
 
     @Override
     public void onSubmitButtonPressedFromAddDevice(String name, String description, String status, String type, String code) {
-        cloudStorage.addDeviceInDatabase(name, getTheCurrentLocation(), description, type, status, code);
-        localStorage.addDeviceInLocalDb(name, getTheCurrentLocation(), description, status, type, code);
+        if (localStorage.getDeviceIfExists(name)) {
+            Toast.makeText(HomeActivity.this, "This device name is already used, please choose another!", Toast.LENGTH_LONG).show();
+        } else {
+            cloudStorage.addDeviceInDatabase(name, getTheCurrentLocation(), description, type, status, code);
+            localStorage.addDeviceInLocalDb(name, getTheCurrentLocation(), description, status, type, code);
 
-        onBackPressedToDeviceFragment();
+            onBackPressedToDeviceFragment();
+        }
     }
 
     @Override
@@ -286,9 +299,12 @@ public class HomeActivity extends MainActivity implements NavigationView.OnNavig
 
         if ("Relay".equals(device.getType())) {
             beginTransactionToAnotherFragment(new RelayFragment(), device.getName(), false);
-        } else {
-            //if it is intensity type
+        } else if ("Locker".equals(device.getType())) {
+            beginTransactionToAnotherFragment(new LockerFragment(), device.getName(), false);
+        } else if ("Progress".equals(device.getType())) {
             beginTransactionToAnotherFragment(new IntensityFragment(), device.getName(), false);
+        } else {
+            beginTransactionToAnotherFragment(new ColorFragment(), device.getName(), false);
         }
     }
 
@@ -309,9 +325,30 @@ public class HomeActivity extends MainActivity implements NavigationView.OnNavig
     }
 
     @Override
+    public void openCloseButtonPressedInLockerFragment(String status) {
+        int value = 0;
+        if ("open".equals(status)) {
+            value = 1;
+        }
+        cloudStorage.changeDeviceValue(currentDevice, value);
+        DEVICE_STATUS = status;
+    }
+
+    @Override
     public void onIntensitySubmitButtonPressed(String status) {
-        //todo change here the status what we obtain in the layout to be visible also in firebase
-        Toast.makeText(HomeActivity.this, status, Toast.LENGTH_LONG).show();
+        int value = Integer.parseInt(status);
+
+        cloudStorage.changeDeviceValue(currentDevice, value);
+        DEVICE_STATUS = status;
+    }
+
+    @Override
+    public void onColorSubmitButtonPressed(String status) {
+        int red = Integer.valueOf(status.substring(1, 3), 16);
+        int green = Integer.valueOf(status.substring(3, 5), 16);
+        int blue = Integer.valueOf(status.substring(5, 7), 16);
+
+        cloudStorage.changeRGBDeviceValue(currentDevice, red, green, blue);
         DEVICE_STATUS = status;
     }
 

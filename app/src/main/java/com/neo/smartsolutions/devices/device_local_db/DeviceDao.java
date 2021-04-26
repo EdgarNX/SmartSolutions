@@ -22,11 +22,11 @@ public interface DeviceDao {
     @Insert
     void insert(Device device);
 
-//    @RawQuery(observedEntities = Device.class)
-//    List<Device> getDevices(SupportSQLiteQuery query);
-
     @Query("SELECT * FROM device_table WHERE location = :locationName")
     List<Device> getDevices(String locationName);
+
+    @Query("SELECT * FROM device_table WHERE name = :deviceName")
+    LiveData<Device> getDevice(String deviceName);
 
     @Delete
     void delete(Device device);

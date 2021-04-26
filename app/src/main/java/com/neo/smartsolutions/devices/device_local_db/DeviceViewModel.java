@@ -33,4 +33,6 @@ public class DeviceViewModel extends AndroidViewModel {
     public void deleteDevice(Device device) {mRepository.deleteDevice(device);}
 
     public List<Device> getAllWithLocationName(String locationName) { return mRepository.getDeviceByLocationName(locationName); }
+
+    public LiveData<Device> getWithDeviceName(String deviceName) { return mRepository.getDevice(deviceName); }
 }

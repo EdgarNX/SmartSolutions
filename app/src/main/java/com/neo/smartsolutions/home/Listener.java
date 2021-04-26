@@ -22,5 +22,8 @@ public interface Listener {
     void onDeleteDeviceButtonPressed(Device device);
 
     void onOnOffButtonPressedInRelayFragment(String status);
+    void openCloseButtonPressedInLockerFragment(String status);
     void onIntensitySubmitButtonPressed(String status);
+    void onColorSubmitButtonPressed(String status);
+
 }

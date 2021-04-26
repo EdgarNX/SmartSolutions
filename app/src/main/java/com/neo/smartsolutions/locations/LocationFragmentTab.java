@@ -24,6 +24,7 @@ import com.neo.smartsolutions.home.Listener;
 import com.neo.smartsolutions.locations.location_local_db.ClickListener;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 
 public class LocationFragmentTab extends Fragment {
@@ -56,10 +57,9 @@ public class LocationFragmentTab extends Fragment {
 
         LocationViewModel mLocationViewModel = new ViewModelProvider(this).get(LocationViewModel.class);
 
-        mLocationViewModel.getAllLocations().observe(getActivity(), new Observer<List<Location>>() {
+        mLocationViewModel.getAllLocations().observe(requireActivity(), new Observer<List<Location>>() {
             @Override
             public void onChanged(@Nullable final List<Location> locations) {
-                // Update the cached copy of the words in the adapter.
                 adapter.setLocations(locations);
             }
         });

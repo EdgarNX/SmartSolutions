@@ -61,4 +61,6 @@
     <string name="delete_location">Delete location</string>
     <string name="delete_word_preamble">Deleting </string>
     <string name="update">Update</string>
+    <string name="submit_color">Submit color</string>
+    <string name="pick_a_color">Pick a color</string>
 </resources>

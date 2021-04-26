@@ -8,8 +8,9 @@ import androidx.room.PrimaryKey;
 @Entity(tableName = "location_table")
 public class Location {
 
-    @PrimaryKey
-    @NonNull
+    @PrimaryKey(autoGenerate = true)
+    public Integer id;
+
     @ColumnInfo(name = "name")
     private String name;
 

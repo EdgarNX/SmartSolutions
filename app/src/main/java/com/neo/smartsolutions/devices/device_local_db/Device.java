@@ -8,8 +8,9 @@ import androidx.room.PrimaryKey;
 @Entity(tableName = "device_table")
 public class Device {
 
-    @PrimaryKey
-    @NonNull
+    @PrimaryKey(autoGenerate = true)
+    public Integer id;
+
     @ColumnInfo(name = "name")
     private String name;
 
@@ -27,6 +28,8 @@ public class Device {
 
     @ColumnInfo(name = "code")
     private String code;
+
+    public void setId(Integer id) { this.id = id; }
 
     public void setName(@NonNull String name) {
         this.name = name;
@@ -56,6 +59,8 @@ public class Device {
     public String getName() {
         return name;
     }
+
+    public Integer getId() { return id; }
 
     public String getLocation() { return location; }
 
