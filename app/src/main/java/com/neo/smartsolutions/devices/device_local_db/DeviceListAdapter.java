@@ -110,7 +110,6 @@ public class DeviceListAdapter extends RecyclerView.Adapter<DeviceListAdapter.De
         holder.getCardView().setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                //todo implement here the long click to edit
                 clickListener.onItemLongClick(currentDevice);
                 return false;
             }

@@ -9,7 +9,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -30,7 +29,7 @@ import com.neo.smartsolutions.devices.device_types.ColorFragment;
 import com.neo.smartsolutions.devices.device_types.IntensityFragment;
 import com.neo.smartsolutions.devices.device_types.LockerFragment;
 import com.neo.smartsolutions.devices.device_types.RelayFragment;
-import com.neo.smartsolutions.help.HelpFragment;
+import com.neo.smartsolutions.about.AboutFragment;
 import com.neo.smartsolutions.home.HomeFragment;
 import com.neo.smartsolutions.home.Listener;
 import com.neo.smartsolutions.locations.AddLocationFragment;
@@ -165,8 +164,8 @@ public class HomeActivity extends MainActivity implements NavigationView.OnNavig
             if (!"Locations".equals(toolbar_title.getText().toString())) {
                 beginTransactionToAnotherFragment(new HomeFragment(), "Locations", true);
             }
-        } else if (id == R.id.nav_help) {
-            beginTransactionToAnotherFragment(new HelpFragment(), "Help", false);
+        } else if (id == R.id.nav_about) {
+            beginTransactionToAnotherFragment(new AboutFragment(), "About", false);
         } else if (id == R.id.nav_settings) {
             beginTransactionToAnotherFragment(new SettingsFragment(), "Settings", false);
         } else if (id == R.id.nav_logout) {

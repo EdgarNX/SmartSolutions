@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">SmartSolutions</string>
-    <string name="first_page_app_description">Save money and time with us. The best engineer group who can create the best and cheapest solutions for you.</string>
+    <string name="app_description">Save money and time with us. The best engineer group who can create the best and cheapest solutions for you.</string>
     <string name="welcome">Welcome</string>
     <string name="sign_up">Sign Up</string>
     <string name="log_in">Log In</string>
@@ -63,4 +63,7 @@
     <string name="update">Update</string>
     <string name="submit_color">Submit color</string>
     <string name="pick_a_color">Pick a color</string>
+    <string name="about">About</string>
+    <string name="app">App</string>
+    <string name="account">Account</string>
 </resources>
