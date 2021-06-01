@@ -58,7 +58,7 @@ public class LogInFragment extends WelcomeResources {
 
     //listeners
 
-    private View.OnClickListener logInOnClick = new View.OnClickListener() {
+    private final View.OnClickListener logInOnClick = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
             email = inputEmail.getText().toString();
