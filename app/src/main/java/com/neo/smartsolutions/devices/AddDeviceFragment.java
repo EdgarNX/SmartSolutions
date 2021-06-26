@@ -21,6 +21,7 @@ import androidx.fragment.app.Fragment;
 import com.neo.smartsolutions.HomeActivity;
 import com.neo.smartsolutions.R;
 import com.neo.smartsolutions.WelcomeActivity;
+import com.neo.smartsolutions.devices.device_local_db.Device;
 import com.neo.smartsolutions.home.Listener;
 
 import java.util.ArrayList;
@@ -79,7 +80,9 @@ public class AddDeviceFragment extends Fragment implements AdapterView.OnItemSel
     private List<String> getSpinnerDeviceType() {
         List<String> devices = new ArrayList<>();
         devices.add("Relay");
+        devices.add("Locker");
         devices.add("Progress");
+        devices.add("Color");
         return devices;
     }
 
@@ -110,7 +113,12 @@ public class AddDeviceFragment extends Fragment implements AdapterView.OnItemSel
         if (!name.isEmpty()) {
             if (deviceSpinnerWasTouched) {
                 if (!code.isEmpty()) {
-                    listener.onSubmitButtonPressedFromAddDevice(name,"description", "0", type, code);
+                    if ("Color".equals(type)) {
+                        listener.onSubmitButtonPressedFromAddDevice(name,"description", "#FFFFFF", type, code);
+                    } else {
+                        listener.onSubmitButtonPressedFromAddDevice(name,"description", "0", type, code);
+                    }
+
                 } else {
                     inputCode.setError("Please complete the code field.");
                 }

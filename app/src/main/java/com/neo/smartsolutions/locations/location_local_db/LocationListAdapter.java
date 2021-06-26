@@ -14,6 +14,7 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.neo.smartsolutions.R;
+import com.neo.smartsolutions.devices.device_local_db.Device;
 
 import java.util.List;
 
@@ -73,7 +74,7 @@ public class LocationListAdapter extends RecyclerView.Adapter<LocationListAdapte
         Location currentLocation = mLocations.get(position);
         holder.getTextViewTitle().setText(currentLocation.getName());
         holder.getTextViewLocation().setText(currentLocation.getLocation());
-        holder.getImageViewImage().setBackground(ContextCompat.getDrawable(mInflater.getContext(), R.drawable.ic_smart_logo));
+        holder.getImageViewImage().setBackground(ContextCompat.getDrawable(mInflater.getContext(), R.drawable.ic_map));
         holder.getCardView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -82,13 +83,15 @@ public class LocationListAdapter extends RecyclerView.Adapter<LocationListAdapte
         });
     }
 
+    public Location getLocationAtPosition (int position) {
+        return mLocations.get(position);
+    }
+
     public void setLocations(List<Location> locations) {
         mLocations = locations;
         notifyDataSetChanged();
     }
 
-    // getItemCount() is called many times, and when it is first called,
-    // mWords has not been updated (means initially, it's null, and we can't return null).
     @Override
     public int getItemCount() {
         if (mLocations != null)

@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
@@ -16,16 +15,16 @@ import com.neo.smartsolutions.HomeActivity;
 import com.neo.smartsolutions.R;
 import com.neo.smartsolutions.home.Listener;
 
-public class RelayFragment extends Fragment {
+public class LockerFragment extends Fragment {
 
     private Listener listener;
 
     Button buttonBack;
-    ImageView imageOnOff;
+    ImageView imageOpenClose;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.h_dev_fragment_relay, container, false);
+        return inflater.inflate(R.layout.h_dev_fragment_locker, container, false);
     }
 
     @Override
@@ -33,9 +32,9 @@ public class RelayFragment extends Fragment {
         buttonBack = view.findViewById(R.id.backImageButton);
         buttonBack.setOnClickListener(backOnClick);
 
-        imageOnOff = view.findViewById(R.id.imageOnOff);
-        imageOnOff.setOnClickListener(onOffButtonOnClick);
-        setImageOnOff();
+        imageOpenClose = view.findViewById(R.id.imageOpenClose);
+        imageOpenClose.setOnClickListener(openCloseButtonOnClick);
+        setImageOpenClose();
     }
 
     @Override
@@ -51,11 +50,11 @@ public class RelayFragment extends Fragment {
 
     //methods
 
-    private void setImageOnOff() {
-        if ("on".equals(HomeActivity.DEVICE_STATUS)) {
-            imageOnOff.setImageResource(R.drawable.ic_power_on);
+    private void setImageOpenClose() {
+        if ("open".equals(HomeActivity.DEVICE_STATUS)) {
+            imageOpenClose.setImageResource(R.drawable.ic_opened_padlock);
         } else {
-            imageOnOff.setImageResource(R.drawable.ic_power_of);
+            imageOpenClose.setImageResource(R.drawable.ic_closed_padlock);
         }
     }
 
@@ -68,17 +67,17 @@ public class RelayFragment extends Fragment {
         }
     };
 
-    private final View.OnClickListener onOffButtonOnClick = new View.OnClickListener() {
+    private final View.OnClickListener openCloseButtonOnClick = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
 
-            if ("on".equals(HomeActivity.DEVICE_STATUS)) {
-                listener.onOnOffButtonPressedInRelayFragment("off");
+            if ("open".equals(HomeActivity.DEVICE_STATUS)) {
+                listener.openCloseButtonPressedInLockerFragment("close");
             } else {
-                listener.onOnOffButtonPressedInRelayFragment("on");
+                listener.openCloseButtonPressedInLockerFragment("open");
             }
 
-            setImageOnOff();
+            setImageOpenClose();
         }
     };
 }
