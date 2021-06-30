@@ -44,7 +44,7 @@ public class LocalStorage {
         locationViewModel.insert(location);
     }
 
-    public void addDeviceInLocalDb(String name, String location, String description, String status, String type, String code) {
+    public void addDeviceInLocalDb(String name, String location, String description, String type, String status, String code) {
         Device device = new Device(name, location, description, status, type, code);
         deviceViewModel.insert(device);
     }

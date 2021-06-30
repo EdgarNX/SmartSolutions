@@ -112,7 +112,7 @@ public class DeviceFragment extends Fragment {
                             public void onClick(DialogInterface dialog, int arg1) {
                                 int position = viewHolder.getAdapterPosition();
                                 Device myDevice = adapter.getDeviceAtPosition(position);
-                                // Toast.makeText(getActivity(), getString(R.string.delete_word_preamble) + " " + myDevice.getName(), Toast.LENGTH_LONG).show();
+
                                 listener.onDeleteDeviceButtonPressed(myDevice);
                                 dialog.cancel();
                             }
@@ -129,7 +129,6 @@ public class DeviceFragment extends Fragment {
                     }
 
                 });
-
         helper.attachToRecyclerView(recyclerViewDevices);
 
         adapter.setOnItemClickListener(new ClickListener<Device>() {

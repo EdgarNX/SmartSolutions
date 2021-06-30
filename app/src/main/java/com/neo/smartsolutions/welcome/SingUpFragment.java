@@ -129,7 +129,6 @@ public class SingUpFragment extends WelcomeResources implements AdapterView.OnIt
     public void setSpinnerText(String text) {
         TextView errorText = (TextView) spinnerCountry.getSelectedView();
         if ("error".equals(text)) {
-            errorText.setError("this is just for the icon");
             errorText.setTextColor(Color.RED);
             errorText.setText("Please choose a country.");
         } else {

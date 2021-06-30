@@ -25,5 +25,4 @@ public interface Listener {
     void openCloseButtonPressedInLockerFragment(String status);
     void onIntensitySubmitButtonPressed(String status);
     void onColorSubmitButtonPressed(String status);
-
 }

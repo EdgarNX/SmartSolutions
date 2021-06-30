@@ -28,8 +28,11 @@ class DeviceRepository {
     }
 
     void insert(Device device) {
-        DeviceRoomDatabase.databaseWriteExecutor.execute(() -> {
-            mDeviceDao.insert(device);
+        DeviceRoomDatabase.databaseWriteExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                mDeviceDao.insert(device);
+            }
         });
     }
 

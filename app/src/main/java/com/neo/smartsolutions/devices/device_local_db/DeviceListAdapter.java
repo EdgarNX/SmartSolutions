@@ -85,21 +85,21 @@ public class DeviceListAdapter extends RecyclerView.Adapter<DeviceListAdapter.De
             } else {
                 holder.getImageViewImage().setBackground(ContextCompat.getDrawable(mInflater.getContext(), R.drawable.ic_power_of));
             }
-        }  else if ("Locker".equals(currentDevice.getType())){
+        } else if ("Locker".equals(currentDevice.getType())) {
             if ("open".equals(currentDevice.getStatus())) {
                 holder.getImageViewImage().setBackground(ContextCompat.getDrawable(mInflater.getContext(), R.drawable.ic_opened_padlock));
             } else {
                 holder.getImageViewImage().setBackground(ContextCompat.getDrawable(mInflater.getContext(), R.drawable.ic_closed_padlock));
             }
-        } else if ("Progress".equals(currentDevice.getType())){
+        } else if ("Progress".equals(currentDevice.getType())) {
             holder.getImageViewImage().setVisibility(View.GONE);
             holder.getTextViewInformation().setText(currentDevice.getStatus() + "%");
-        } else {
+        } else if ("Color".equals(currentDevice.getType())) {
             holder.getImageViewImage().setVisibility(View.GONE);
             holder.getTextViewInformation().setBackgroundColor(Color.parseColor(currentDevice.getStatus()));
+        } else {
+            holder.getImageViewImage().setVisibility(View.VISIBLE);
         }
-
-
         holder.getCardView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -116,7 +116,7 @@ public class DeviceListAdapter extends RecyclerView.Adapter<DeviceListAdapter.De
         });
     }
 
-    public Device getDeviceAtPosition (int position) {
+    public Device getDeviceAtPosition(int position) {
         return mDevices.get(position);
     }
 

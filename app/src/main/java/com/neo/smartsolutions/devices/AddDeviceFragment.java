@@ -114,11 +114,10 @@ public class AddDeviceFragment extends Fragment implements AdapterView.OnItemSel
             if (deviceSpinnerWasTouched) {
                 if (!code.isEmpty()) {
                     if ("Color".equals(type)) {
-                        listener.onSubmitButtonPressedFromAddDevice(name,"description", "#FFFFFF", type, code);
+                        listener.onSubmitButtonPressedFromAddDevice(name,"description",type,"#FFFFFF", code);
                     } else {
-                        listener.onSubmitButtonPressedFromAddDevice(name,"description", "0", type, code);
+                        listener.onSubmitButtonPressedFromAddDevice(name,"description", type, "0", code);
                     }
-
                 } else {
                     inputCode.setError("Please complete the code field.");
                 }

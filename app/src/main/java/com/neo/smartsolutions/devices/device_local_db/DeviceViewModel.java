@@ -13,7 +13,6 @@ import java.util.concurrent.ExecutionException;
 public class DeviceViewModel extends AndroidViewModel {
 
     private DeviceRepository mRepository;
-
     private LiveData<List<Device>> mAllDevice;
 
     public DeviceViewModel(Application application) {
@@ -32,7 +31,9 @@ public class DeviceViewModel extends AndroidViewModel {
 
     public void deleteDevice(Device device) {mRepository.deleteDevice(device);}
 
-    public List<Device> getAllWithLocationName(String locationName) { return mRepository.getDeviceByLocationName(locationName); }
+    public List<Device> getAllWithLocationName(String locationName)
+    { return mRepository.getDeviceByLocationName(locationName); }
 
-    public LiveData<Device> getWithDeviceName(String deviceName) { return mRepository.getDevice(deviceName); }
+    public LiveData<Device> getWithDeviceName(String deviceName)
+    { return mRepository.getDevice(deviceName); }
 }

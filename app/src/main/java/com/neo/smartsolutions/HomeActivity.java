@@ -271,16 +271,18 @@ public class HomeActivity extends MainActivity implements NavigationView.OnNavig
     }
 
     @Override
-    public void onSubmitButtonPressedFromAddDevice(String name, String description, String status, String type, String code) {
+    public void onSubmitButtonPressedFromAddDevice(String name, String description, String type, String status, String code) {
         if (localStorage.getDeviceIfExists(name)) {
-            Toast.makeText(HomeActivity.this, "This device name is already used, please choose another!", Toast.LENGTH_LONG).show();
+            Toast.makeText(HomeActivity.this,
+                    "This device name is already used, please choose another!", Toast.LENGTH_LONG).show();
         } else {
             cloudStorage.addDeviceInDatabase(name, getTheCurrentLocation(), description, type, status, code);
-            localStorage.addDeviceInLocalDb(name, getTheCurrentLocation(), description, status, type, code);
+            localStorage.addDeviceInLocalDb(name, getTheCurrentLocation(), description, type, status, code);
 
             onBackPressedToDeviceFragment();
         }
     }
+
 
     @Override
     public void onSubmitButtonPressedFromUpdateDevice(String name) {
